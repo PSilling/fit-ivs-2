@@ -1,8 +1,93 @@
-Tento soubor bude obsahovat:
+--------------------------------------------------------------------------------
 
--- stanovené termíny,
--- přidělení úkolů na projektu jednotlivým řešitelům,
--- zvolené komunikační kanály pro komunikaci v týmu a stanovená pravidla pro komunikaci (jsou-li nějaká),
--- zvolený systém pro správu verzí a hosting + informaci, jak do repozitáře mohou nahlédnout vyučující/cvičící (viz níže).
+Stanovené termíny (předběžné)
+  - 5. 3. 2019    dokončení plánu projektu
+  - 8. 3. 2019    vytvoření základního rozhraní matematické knihovny
+  - 15. 3. 2019   sepsání testů pro matematickou knihovnu
+  - 17. 3. 2019   vytvoření grafického rozhraní
+  - 24. 3. 2019   implementace matematické knihovny
+  - 29. 3. 2019   propojení grafického rozhraní s matematickou knihovnou
+  - 31. 3. 2019   zhotovení programu pro výpočet směrodatné odchylky a profiling
+  - 7. 4. 2019    dokončení programové dokumentace a mockup GUI další verze
+  - 14. 4. 2019   přidání instalátoru, odinstalátoru, uživatelské dokumentace a Makefile
+  - 21. 4. 2019   zhodnocení práce, porovnání plánu se skutečností, ladění
+  - 24. 4. 2019   konečné testování a kontrola, odevzdání
+  - 2. 5. 2019    samostatné zhodnocení vyskytlých problémů
+  - 3. 5. 2019    zkušební instalace
+  - 14. 5. 2019   vytvoření informativní prezentace a obhajoba projektu
 
-Alternativně lze odevzdat archiv xlogin01_xlogin02_xlogin03_xlogin04_plan.zip, který bude obsahovat libovolný počet souborů xlogin01_xlogin02_xlogin03_xlogin04_plan* ("*" zastupuje libovolný počet libovolných znaků, tedy např. ".mpp" či "01.jpg"), přičemž plán zde může být vytvořený v MS Projectu či jiném programu (není-li daný program ve škole dostupný, je nutno odevzdat i exportovanou verzi v PDF či jpg).
+--------------------------------------------------------------------------------
+
+Přidělení úkolů řešitelům
+  - celotýmové úkoly
+    - naplánování všech vlastností kalkulačky
+    - kontrola vizuální stránky grafického rozhraní
+    - závěrečná kontrola funkčnosti
+    - zhodnocení práce, porovnání plánu se skutečností
+    - zkušební instalace výsledného produktu
+
+  - xsilli01
+    - inicializace GitHub repozitáře
+    - vytvoření plánu projektu
+    - správa úkolů a kontrola průběžné práce
+    - sepsání testů pro matematickou knihovnu
+
+  - xmaste02
+    - implementace matematické knihovny
+    - sepsání programové dokumentace pomocí nástroje Doxygen
+    - kontrola jazykové a logické struktury dokumentace
+
+  - xschme00
+    - propojení grafického rozhraní s matematickou knihovnou
+    - vytvoření mockup GUI základní i vyšší verze kalkulačky
+
+  - xradan00
+    - vytvoření grafického rozhraní
+
+  - zatím nepřiděleno
+    - vytvoření základního rozhraní matematické knihovny
+    - zhotovení programu pro výpočet směrodatné odchylky
+    - profiling
+    - sepsání uživatelské dokumentace
+    - vytvoření Makefile
+    - dodání instalátoru a odinstalátoru
+    - základní code review zdrojových souborů
+    - ověřování funkčnosti jednotlivých částí pomocí ladících nástrojů
+    - vytvoření prezentace pro obhajobu
+
+--------------------------------------------------------------------------------
+
+Komunikační kanály
+  - Discord
+    - Hlavní diskuzní kanál. Byl založen skupinový server The Brave Chickens, který bude v průběhu práce sloužit
+      primárně pro rychlou komunikaci s ostatními členy týmu. Každý člen musí povinně kontrolovat příspěvky alespoň
+      jedenkrát denně. Předpokládá se i časté užívání skupinových hovorů.
+
+  - GitHub
+    - Hlavní pracovní kanál. V rámci sekcí Issues, Pull requests a Projects budou průběžně aktualizovány samotné
+      příspěvky týkající se změn v projektu. Bude zde rovněž prováděna kontrola změn pomocí code review komentářů.
+      Členové týmu musí před zahájením další práce zkontrolovat aktuální stav projektu v online repozitáři a musí
+      do tří dnů reagovat na případně code review komentáře. Lze urgovat přes Discord server.
+
+  - Týmová setkání
+    - Členové týmu se budou v případě potřeby scházet přímo na fakultě, aby bylo možné lépe prodiskutovat detaily.
+      Pokud to však bude možné a dostačující, budou se osobní setkání nahrazovat skupinovými hovory přes Discord,
+      aby se ušetřil čas s plánováním termínů setkání (pro plánování bude primárně využíván Doodle).
+
+  - Telefon
+    - Všichni členové týmu disponují telefonními kontakty na ostatní členy. V akutních případech, kdy je lhůta pro
+      kontrolu Discord serveru nedostačující, lze ostatní členy urgovat využitím telefonního hovoru.
+
+  - Komunikace s vyučujícími
+    - Dle zadání bude zprostředkována skrze vedoucího projektu (xsilli01).
+
+--------------------------------------------------------------------------------
+
+Zvolený systém pro správu verzí a hosting
+  - Systém pro správu verzí: Git
+  - Hosting: https://github.com/
+    - Repozitář je hostovaný privátně (na účtu vedoucího projektu) na adrese https://github.com/PSilling/fit-ivs-2/.
+      Přístup do repozitáře je vyučujícím a cvičícím umožněn skrze účet ivskontrola (https://github.com/ivskontrola/),
+      kterému bylo přes pozvánku uděleno oprávnění do repozitáře neomezeně nahlížet.
+
+--------------------------------------------------------------------------------
