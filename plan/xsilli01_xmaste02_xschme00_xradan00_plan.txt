@@ -1,20 +1,37 @@
 --------------------------------------------------------------------------------
 
-Stanovené termíny (předběžné)
-  - 5. 3. 2019    dokončení plánu projektu
-  - 8. 3. 2019    vytvoření základního rozhraní matematické knihovny
-  - 15. 3. 2019   sepsání testů pro matematickou knihovnu
-  - 17. 3. 2019   vytvoření grafického rozhraní
-  - 24. 3. 2019   implementace matematické knihovny
-  - 29. 3. 2019   propojení grafického rozhraní s matematickou knihovnou
-  - 31. 3. 2019   zhotovení programu pro výpočet směrodatné odchylky a profiling
-  - 7. 4. 2019    dokončení programové dokumentace a mockup GUI další verze
-  - 14. 4. 2019   přidání instalátoru, odinstalátoru, uživatelské dokumentace a Makefile
-  - 21. 4. 2019   zhodnocení práce, porovnání plánu se skutečností, ladění
-  - 24. 4. 2019   konečné testování a kontrola, odevzdání
-  - 2. 5. 2019    samostatné zhodnocení vyskytlých problémů
-  - 3. 5. 2019    zkušební instalace
-  - 14. 5. 2019   vytvoření informativní prezentace a obhajoba projektu
+Stanovené termíny
+  - 4. 3. 2019
+    - dokončení plánu projektu
+  - 5. 3. 2019
+    - vytvoření základního rozhraní matematické knihovny
+  - 10. 3. 2019
+    - sepsání testů pro matematickou knihovnu
+  - 17. 3. 2019
+    - vytvoření grafického rozhraní
+    - implementace matematické knihovny
+  - 24. 3. 2019
+    - propojení grafického rozhraní s matematickou knihovnou
+    - zhotovení programu pro výpočet směrodatné odchylky a profiling
+  - 31. 3. 2019
+    - dokončení programové dokumentace
+    - mockup GUI další verze
+  - 7. 4. 2019
+    - přidání instalátoru, odinstalátoru
+    - dokončení Makefile
+  - 14. 4. 2019
+    - sepsání uživatelské dokumentace
+    - ladění produktu
+  - 21. 4. 2019
+    - zhodnocení práce a porovnání plánu se skutečností
+  - 24. 4. 2019
+    - konečné testování a kontrola, odevzdání
+  - 2. 5. 2019
+    - samostatné zhodnocení vyskytlých problémů
+  - 3. 5. 2019
+    - zkušební instalace
+  - 14. 5. 2019
+    - vytvoření informativní prezentace a obhajoba projektu
 
 --------------------------------------------------------------------------------
 
@@ -25,34 +42,32 @@ Přidělení úkolů řešitelům
     - závěrečná kontrola funkčnosti
     - zhodnocení práce, porovnání plánu se skutečností
     - zkušební instalace výsledného produktu
+    - základní code review zdrojových souborů
 
   - xsilli01
     - inicializace GitHub repozitáře
     - vytvoření plánu projektu
-    - správa úkolů a kontrola průběžné práce
+    - správa úkolů, code review a kontrola průběžné práce
     - sepsání testů pro matematickou knihovnu
+    - vytvoření základního rozhraní matematické knihovny
 
   - xmaste02
     - implementace matematické knihovny
     - sepsání programové dokumentace pomocí nástroje Doxygen
+    - ověřování funkčnosti jednotlivých částí pomocí ladících nástrojů
     - kontrola jazykové a logické struktury dokumentace
 
   - xschme00
-    - propojení grafického rozhraní s matematickou knihovnou
     - vytvoření mockup GUI základní i vyšší verze kalkulačky
+    - zhotovení programu pro výpočet směrodatné odchylky
+    - profiling
+    - dodání instalátoru a odinstalátoru
+    - sepsání uživatelské dokumentace
 
   - xradan00
     - vytvoření grafického rozhraní
-
-  - zatím nepřiděleno
-    - vytvoření základního rozhraní matematické knihovny
-    - zhotovení programu pro výpočet směrodatné odchylky
-    - profiling
-    - sepsání uživatelské dokumentace
     - vytvoření Makefile
-    - dodání instalátoru a odinstalátoru
-    - základní code review zdrojových souborů
-    - ověřování funkčnosti jednotlivých částí pomocí ladících nástrojů
+    - propojení grafického rozhraní s matematickou knihovnou
     - vytvoření prezentace pro obhajobu
 
 --------------------------------------------------------------------------------
