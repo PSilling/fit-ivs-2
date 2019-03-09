@@ -1,4 +1,5 @@
 #!usr/bin/python
+# -*- coding: utf-8 -*-
 
 # Project: fit-ivs-2
 # File: math_lib_test.py
@@ -360,3 +361,143 @@ class TestNrt(TestCase):
         self.assertAlmostEqual(0.724_204_297, nrt(3.3, -3.7))
         self.assertAlmostEqual(1.604_823_081, nrt(514.8, 13.2))
         self.assertAlmostEqual(0.319_560_103, nrt(45_415.7, -9.4))
+
+
+class TestSin(TestCase):
+
+    def test_sin_commonly_known_values(self):
+        self.assertEqual(0, sin(0))
+        self.assertAlmostEqual(0.5, sin(PI / 6))
+        self.assertAlmostEqual(0.707_106_781, sin(PI / 4))
+        self.assertAlmostEqual(0.866_025_404, sin(PI / 3))
+        self.assertAlmostEqual(1, sin(PI / 2))
+
+        self.assertAlmostEqual(0.5, sin((5 * PI) / 6))
+        self.assertAlmostEqual(0.707_106_781, sin((3 * PI) / 4))
+        self.assertAlmostEqual(0.866_0254_04, sin((2 * PI) / 3))
+        self.assertAlmostEqual(0, sin(PI))
+
+        self.assertAlmostEqual(-0.5, sin((7 * PI) / 6))
+        self.assertAlmostEqual(-0.707_106_781, sin((5 * PI) / 4))
+        self.assertAlmostEqual(-0.866_025_404, sin((4 * PI) / 3))
+        self.assertAlmostEqual(-1, sin((3 * PI) / 2))
+
+        self.assertAlmostEqual(-0.5, sin((11 * PI) / 6))
+        self.assertAlmostEqual(-0.707_106_781, sin((7 * PI) / 4))
+        self.assertAlmostEqual(-0.866_025_404, sin((5 * PI) / 3))
+        self.assertAlmostEqual(0, sin(2 * PI))
+
+    def test_sin_above_zero(self):
+        self.assertAlmostEqual(0.909_297_427, sin(2))
+        self.assertAlmostEqual(-0.879_695_760, sin(10.5))
+        self.assertAlmostEqual(0.683_909_954, sin(132.7))
+        self.assertAlmostEqual(-0.889_940_618, sin(1_532))
+
+    def test_sin_below_zero(self):
+        self.assertAlmostEqual(0.958_924_275, sin(-5))
+        self.assertAlmostEqual(-0.777_794_162, sin(-21.1))
+        self.assertAlmostEqual(0.962_850_154, sin(-243.2))
+        self.assertAlmostEqual(-0.919_896_053, sin(-3_841))
+
+
+class TestAsin(TestCase):
+
+    def test_asin_x_not_defined(self):
+        self.assertRaises(ValueError, asin, 3)
+        self.assertRaises(ValueError, asin, -42)
+        self.assertRaises(ValueError, asin, 1.01)
+        self.assertRaises(ValueError, asin, -1.001)
+
+    def test_asin_commonly_known_values(self):
+        self.assertEqual(0, asin(0))
+        self.assertAlmostEqual(PI / 6, asin(0.5))
+        self.assertAlmostEqual(PI / 4, asin(0.707_106_781))
+        self.assertAlmostEqual(PI / 3, asin(0.866_025_404))
+        self.assertAlmostEqual(PI / 2, asin(1))
+
+        self.assertAlmostEqual(-PI / 6, asin(-0.5))
+        self.assertAlmostEqual(-PI / 4, asin(-0.707_106_781))
+        self.assertAlmostEqual(-PI / 3, asin(-0.866_025_404))
+        self.assertAlmostEqual(-PI / 2, asin(-1))
+
+    def test_asin_above_zero(self):
+        self.assertAlmostEqual(0.170_829_669, asin(0.17))
+        self.assertAlmostEqual(0.283_794_109, asin(0.28))
+        self.assertAlmostEqual(0.546_850_951, asin(0.52))
+        self.assertAlmostEqual(1.055_202_321, asin(0.87))
+
+    def test_asin_below_zero(self):
+        self.assertAlmostEqual(-0.110_223_050, asin(-0.11))
+        self.assertAlmostEqual(-0.357_571_104, asin(-0.35))
+        self.assertAlmostEqual(-0.500_654_712, asin(-0.48))
+        self.assertAlmostEqual(-1.287_002_218, asin(-0.96))
+
+
+class TestCos(TestCase):
+
+    def test_cos_commonly_known_values(self):
+        self.assertAlmostEqual(1, cos(0))
+        self.assertAlmostEqual(0.866_025_404, cos(PI / 6))
+        self.assertAlmostEqual(0.707_106_781, cos(PI / 4))
+        self.assertAlmostEqual(0.5, cos(PI / 3))
+        self.assertAlmostEqual(0, cos(PI / 2))
+
+        self.assertAlmostEqual(-0.5, cos((2 * PI) / 3))
+        self.assertAlmostEqual(-0.707_106_781, cos((3 * PI) / 4))
+        self.assertAlmostEqual(-0.866_0254_04, cos((5 * PI) / 6))
+        self.assertAlmostEqual(-1, cos(PI))
+
+        self.assertAlmostEqual(-0.5, cos((4 * PI) / 3))
+        self.assertAlmostEqual(-0.707_106_781, cos((5 * PI) / 4))
+        self.assertAlmostEqual(-0.866_025_404, cos((7 * PI) / 6))
+        self.assertAlmostEqual(0, cos((3 * PI) / 2))
+
+        self.assertAlmostEqual(0.5, cos((5 * PI) / 3))
+        self.assertAlmostEqual(0.707_106_781, cos((7 * PI) / 4))
+        self.assertAlmostEqual(0.866_025_404, cos((11 * PI) / 6))
+        self.assertAlmostEqual(1, cos(2 * PI))
+
+    def test_cos_above_zero(self):
+        self.assertAlmostEqual(-0.653_643_621, cos(4))
+        self.assertAlmostEqual(0.986_192_302, cos(12.4))
+        self.assertAlmostEqual(-0.964_035_833, cos(254.2))
+        self.assertAlmostEqual(0.547_905_791, cos(2_506))
+
+    def test_cos_below_zero(self):
+        self.assertAlmostEqual(-0.416_146_837, cos(-2))
+        self.assertAlmostEqual(0.252_119_408, cos(-30.1))
+        self.assertAlmostEqual(-0.069_821_171, cos(-394.2))
+        self.assertAlmostEqual(0.308_091_888, cos(-1_031.7))
+
+
+class TestAcos(TestCase):
+
+    def test_acos_x_not_defined(self):
+        self.assertRaises(ValueError, acos, 2)
+        self.assertRaises(ValueError, acos, -31)
+        self.assertRaises(ValueError, acos, 1.001)
+        self.assertRaises(ValueError, acos, 1.01)
+
+    def test_acos_commonly_known_values(self):
+        self.assertAlmostEqual(0, acos(1))
+        self.assertAlmostEqual(PI / 6, acos(0.866_025_404))
+        self.assertAlmostEqual(PI / 4, acos(0.707_106_781))
+        self.assertAlmostEqual(PI / 3, acos(0.5))
+        self.assertAlmostEqual(PI / 2, acos(0))
+
+        self.assertAlmostEqual((PI * 2) / 3, acos(-0.5))
+        self.assertAlmostEqual((PI * 3) / 4, acos(-0.707_106_781))
+        self.assertAlmostEqual((PI * 5) / 6, acos(-0.866_025_404))
+        self.assertAlmostEqual(PI, acos(-1))
+
+    def test_acos_above_zero(self):
+        self.assertAlmostEqual(1.450_506_444, acos(0.12))
+        self.assertAlmostEqual(1.223_879_429, acos(0.34))
+        self.assertAlmostEqual(0.976_410_527, acos(0.56))
+        self.assertAlmostEqual(0.427_512_265, acos(0.91))
+
+    def test_acos_below_zero(self):
+        self.assertAlmostEqual(1.670_963_748, acos(-0.10))
+        self.assertAlmostEqual(1.813_162_178, acos(-0.24))
+        self.assertAlmostEqual(2.252_349_538, acos(-0.63))
+        self.assertAlmostEqual(2.668_141_496, acos(-0.89))
