@@ -1,5 +1,7 @@
 #!usr/bin/python
 
+PI = 3.141_592_653_589_793
+
 
 # TODO: addition x + y
 def add(x, y):
