@@ -246,3 +246,117 @@ class TestMod(TestCase):
         self.assertAlmostEqual(108.2, mod(-5_598.9, 815.3))
         self.assertAlmostEqual(379.7, mod(97_117.2, 887.5))
         self.assertAlmostEqual(-4_619.4, mod(53_712_428.6, -7_911.2))
+
+
+class TestFact(TestCase):
+
+    def test_fact_below_zero(self):
+        self.assertRaises(ValueError, fact, -1)
+        self.assertRaises(ValueError, fact, -0.1)
+
+    def test_fact_of_zero(self):
+        self.assertEqual(1, fact(0))
+
+    def test_fact_above_zero(self):
+        self.assertEqual(1, fact(1))
+        self.assertEqual(2, fact(2))
+        self.assertEqual(6, fact(3))
+        self.assertEqual(24, fact(4))
+        self.assertEqual(40_320, fact(8))
+        self.assertEqual(20_922_789_888_000, fact(16))
+
+    def test_fact_with_float(self):
+        self.assertRaises(ValueError, fact, -3.5)
+        self.assertRaises(ValueError, fact, -0.11)
+        self.assertRaises(ValueError, fact, 3.5)
+        self.assertRaises(ValueError, fact, 0.11)
+
+
+class TestPow(TestCase):
+
+    def test_pow_negative_raised_to_float(self):
+        self.assertRaises(ValueError, pow, -0.3, 1.6)
+        self.assertRaises(ValueError, pow, -0.55, -1.4)
+        self.assertRaises(ValueError, pow, -2, 1.1)
+        self.assertRaises(ValueError, pow, -5, -2.4)
+
+    def test_pow_near_zero(self):
+        self.assertEqual(1, pow(0, 0))
+        self.assertEqual(0, pow(0, 2))
+        self.assertEqual(1, pow(3, 0))
+        self.assertEqual(1, pow(-2, 0))
+        self.assertEqual(2, pow(2, 1))
+        self.assertEqual(-3, pow(-3, 1))
+        self.assertEqual(1, pow(1, 3))
+        self.assertEqual(16, pow(-4, 2))
+
+    def test_pow_above_zero(self):
+        self.assertEqual(2, pow(2, 1))
+        self.assertEqual(27, pow(3, 3))
+        self.assertEqual(196, pow(14, 2))
+        self.assertEqual(160_000, pow(20, 4))
+        self.assertEqual(62_748_517, pow(13, 7))
+
+    def test_pow_below_zero(self):
+        self.assertAlmostEqual(1, pow(-1, -4))
+        self.assertAlmostEqual(-0.2, pow(-5, -1))
+        self.assertAlmostEqual(0.062_5, pow(-4, -2))
+        self.assertAlmostEqual(-0.015_625, pow(-4, -3))
+        self.assertAlmostEqual(0.000_416_493, pow(-7, -4))
+
+    def test_pow_with_one_float(self):
+        self.assertAlmostEqual(0, pow(0, 4.95))
+        self.assertAlmostEqual(0.217_637_641, pow(4, -1.1))
+        self.assertAlmostEqual(445.721_888_4, pow(2, 8.8))
+        self.assertAlmostEqual(571.787, pow(8.3, 3))
+
+    def test_pow_with_two_floats(self):
+        self.assertAlmostEqual(18.767_569_28, pow(2.5, 3.2))
+        self.assertAlmostEqual(23.481_226_54, pow(8.2, 1.5))
+        self.assertAlmostEqual(0.001_983_804, pow(4.4, -4.2))
+        self.assertAlmostEqual(401.991_599_2, pow(3.1, 5.3))
+
+
+class TestNrt(TestCase):
+
+    def test_nrt_with_n_set_as_zero(self):
+        self.assertRaises(ValueError, nrt, -0.2, 0)
+        self.assertRaises(ValueError, nrt, 0.7, 0)
+        self.assertRaises(ValueError, nrt, -4, 0)
+        self.assertRaises(ValueError, nrt, 7, 0)
+
+    def test_nrt_of_negative_number(self):
+        self.assertRaises(ValueError, nrt, -0.1, 2)
+        self.assertRaises(ValueError, nrt, -0.9, -3.1)
+        self.assertRaises(ValueError, nrt, -8, 6)
+        self.assertRaises(ValueError, nrt, -1, -9.2)
+
+    def test_nrt_of_zero_with_negative_n(self):
+        self.assertRaises(ValueError, nrt, 0, -5)
+        self.assertRaises(ValueError, nrt, 0, -0.3)
+
+    def test_nrt_near_zero(self):
+        self.assertEqual(0, nrt(0, 2))
+        self.assertEqual(2, nrt(2, 1))
+        self.assertEqual(-3, nrt(-3, 1))
+        self.assertEqual(1, nrt(1, 3))
+        self.assertEqual(2, nrt(4, 2))
+
+    def test_nrt_above_zero(self):
+        self.assertEqual(3, nrt(27, 3))
+        self.assertEqual(2, nrt(256, 8))
+        self.assertAlmostEqual(2.734_068_828, nrt(1_142, 7))
+        self.assertAlmostEqual(6.831_111_827, nrt(14_875, 5))
+        self.assertAlmostEqual(2.482_165_277, nrt(5_153_732, 17))
+
+    def test_nrt_with_one_float(self):
+        self.assertAlmostEqual(0, nrt(0, 3.1))
+        self.assertAlmostEqual(0.516_778_892, nrt(4, -2.1))
+        self.assertAlmostEqual(3.507_434_699, nrt(413, 4.8))
+        self.assertAlmostEqual(3.443_924_488, nrt(98_764, 9.3))
+
+    def test_nrt_with_two_floats(self):
+        self.assertAlmostEqual(1.071_482_526, nrt(1.3, 3.8))
+        self.assertAlmostEqual(0.724_204_297, nrt(3.3, -3.7))
+        self.assertAlmostEqual(1.604_823_081, nrt(514.8, 13.2))
+        self.assertAlmostEqual(0.319_560_103, nrt(45_415.7, -9.4))
