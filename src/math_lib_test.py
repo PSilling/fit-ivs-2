@@ -14,7 +14,8 @@ from .math_lib import *
 # Test names are based on the tested criteria and also correspond to
 # appropriate functions inside math_lib.py. Tested values, and more
 # importantly exceptions, are mostly conforming to the standard Python
-# math library. However, complex numbers (e.g. in pow) raise ValueErrors.
+# math library. Differences: complex numbers (e.g. in pow) raise ValueErrors;
+# power raises ValueError without natural exponent.
 #
 # Tests can be run from your IDE or using the following command in the project
 # root directory: python3 -m unittest src/math_lib_test.py
@@ -275,17 +276,23 @@ class TestFact(TestCase):
 
 class TestPow(TestCase):
 
-    def test_pow_negative_raised_to_float(self):
+    def test_pow_raised_to_not_natural(self):
+        self.assertRaises(ValueError, pow, 3, 0)
+        self.assertRaises(ValueError, pow, -2, 0)
+        self.assertRaises(ValueError, pow, 4, -1)
+        self.assertRaises(ValueError, pow, -5, -5)
+
         self.assertRaises(ValueError, pow, -0.3, 1.6)
-        self.assertRaises(ValueError, pow, -0.55, -1.4)
+        self.assertRaises(ValueError, pow, -3.1, -2.4)
+        self.assertRaises(ValueError, pow, 1.3, 2.6)
+        self.assertRaises(ValueError, pow, 0.55, 1.4)
         self.assertRaises(ValueError, pow, -2, 1.1)
         self.assertRaises(ValueError, pow, -5, -2.4)
+        self.assertRaises(ValueError, pow, 1, 0.1)
+        self.assertRaises(ValueError, pow, 7, -4.3)
 
     def test_pow_near_zero(self):
-        self.assertEqual(1, pow(0, 0))
         self.assertEqual(0, pow(0, 2))
-        self.assertEqual(1, pow(3, 0))
-        self.assertEqual(1, pow(-2, 0))
         self.assertEqual(2, pow(2, 1))
         self.assertEqual(-3, pow(-3, 1))
         self.assertEqual(1, pow(1, 3))
@@ -298,24 +305,13 @@ class TestPow(TestCase):
         self.assertEqual(160_000, pow(20, 4))
         self.assertEqual(62_748_517, pow(13, 7))
 
-    def test_pow_below_zero(self):
-        self.assertAlmostEqual(1, pow(-1, -4))
-        self.assertAlmostEqual(-0.2, pow(-5, -1))
-        self.assertAlmostEqual(0.062_5, pow(-4, -2))
-        self.assertAlmostEqual(-0.015_625, pow(-4, -3))
-        self.assertAlmostEqual(0.000_416_493, pow(-7, -4))
-
-    def test_pow_with_one_float(self):
-        self.assertAlmostEqual(0, pow(0, 4.95))
-        self.assertAlmostEqual(0.217_637_641, pow(4, -1.1))
-        self.assertAlmostEqual(445.721_888_4, pow(2, 8.8))
-        self.assertAlmostEqual(571.787, pow(8.3, 3))
-
-    def test_pow_with_two_floats(self):
-        self.assertAlmostEqual(18.767_569_28, pow(2.5, 3.2))
-        self.assertAlmostEqual(23.481_226_54, pow(8.2, 1.5))
-        self.assertAlmostEqual(0.001_983_804, pow(4.4, -4.2))
-        self.assertAlmostEqual(401.991_599_2, pow(3.1, 5.3))
+    def test_pow_with_float_x(self):
+        self.assertAlmostEqual(0.01, pow(0.1, 2))
+        self.assertAlmostEqual(3.375, pow(1.5, 3))
+        self.assertAlmostEqual(45.6976, pow(-2.6, 4))
+        self.assertAlmostEqual(-335.544_32, pow(-3.2, 5))
+        self.assertAlmostEqual(1_008.062_5, pow(-31.75, 2))
+        self.assertAlmostEqual(2_924.207, pow(14.3, 3))
 
 
 class TestNrt(TestCase):
