@@ -15,7 +15,8 @@ from .math_lib import *
 # appropriate functions inside math_lib.py. Tested values, and more
 # importantly exceptions, are mostly conforming to the standard Python
 # math library. Differences: complex numbers (e.g. in pow) raise ValueErrors;
-# power raises ValueError without natural exponent.
+# power raises ValueError without natural exponent; arcsine and arccosine
+# return extreme result value when in 0.001 range of the extreme.
 #
 # Tests can be run from your IDE or using the following command in the project
 # root directory: python3 -m unittest src/math_lib_test.py
@@ -409,12 +410,10 @@ class TestAsin(TestCase):
         self.assertAlmostEqual(PI / 6, asin(0.5))
         self.assertAlmostEqual(PI / 4, asin(0.707_106_781))
         self.assertAlmostEqual(PI / 3, asin(0.866_025_404))
-        self.assertAlmostEqual(PI / 2, asin(1))
 
         self.assertAlmostEqual(-PI / 6, asin(-0.5))
         self.assertAlmostEqual(-PI / 4, asin(-0.707_106_781))
         self.assertAlmostEqual(-PI / 3, asin(-0.866_025_404))
-        self.assertAlmostEqual(-PI / 2, asin(-1))
 
     def test_asin_above_zero(self):
         self.assertAlmostEqual(0.170_829_669, asin(0.17))
@@ -427,6 +426,12 @@ class TestAsin(TestCase):
         self.assertAlmostEqual(-0.357_571_104, asin(-0.35))
         self.assertAlmostEqual(-0.500_654_712, asin(-0.48))
         self.assertAlmostEqual(-1.287_002_218, asin(-0.96))
+
+    def test_asin_close_to_extreme(self):
+        self.assertEqual(PI / 2, asin(1))
+        self.assertEqual(PI / 2, asin(0.999))
+        self.assertEqual(-PI / 2, asin(-1))
+        self.assertEqual(-PI / 2, asin(-0.999))
 
 
 class TestCos(TestCase):
@@ -475,7 +480,6 @@ class TestAcos(TestCase):
         self.assertRaises(ValueError, acos, 1.01)
 
     def test_acos_commonly_known_values(self):
-        self.assertAlmostEqual(0, acos(1))
         self.assertAlmostEqual(PI / 6, acos(0.866_025_404))
         self.assertAlmostEqual(PI / 4, acos(0.707_106_781))
         self.assertAlmostEqual(PI / 3, acos(0.5))
@@ -484,7 +488,6 @@ class TestAcos(TestCase):
         self.assertAlmostEqual((PI * 2) / 3, acos(-0.5))
         self.assertAlmostEqual((PI * 3) / 4, acos(-0.707_106_781))
         self.assertAlmostEqual((PI * 5) / 6, acos(-0.866_025_404))
-        self.assertAlmostEqual(PI, acos(-1))
 
     def test_acos_above_zero(self):
         self.assertAlmostEqual(1.450_506_444, acos(0.12))
@@ -497,3 +500,9 @@ class TestAcos(TestCase):
         self.assertAlmostEqual(1.813_162_178, acos(-0.24))
         self.assertAlmostEqual(2.252_349_538, acos(-0.63))
         self.assertAlmostEqual(2.668_141_496, acos(-0.89))
+
+    def test_acos_close_to_extreme(self):
+        self.assertEqual(0, acos(1))
+        self.assertEqual(0, acos(0.999))
+        self.assertEqual(PI, acos(-1))
+        self.assertEqual(PI, acos(-0.999))
