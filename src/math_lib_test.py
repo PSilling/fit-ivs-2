@@ -360,6 +360,31 @@ class TestNrt(TestCase):
         self.assertAlmostEqual(0.319_560_103, nrt(45_415.7, -9.4))
 
 
+class TestReduceRad(TestCase):
+
+    def test_in_reduction_interval(self):
+        self.assertEqual(2 * PI, reduce_rad(2 * PI))
+        self.assertEqual(-2 * PI, reduce_rad(-2 * PI))
+        self.assertEqual(PI, reduce_rad(PI))
+        self.assertEqual(-PI, reduce_rad(-PI))
+        self.assertEqual(0.5 * PI, reduce_rad(0.5 * PI))
+        self.assertEqual(-0.5 * PI, reduce_rad(-0.5 * PI))
+        self.assertEqual(1.312, reduce_rad(1.312))
+        self.assertEqual(-4.421, reduce_rad(-4.421))
+
+    def test_above_reduction_interval(self):
+        self.assertAlmostEqual(2 * PI, reduce_rad(4 * PI))
+        self.assertAlmostEqual(1 * PI, reduce_rad(7 * PI))
+        self.assertAlmostEqual(0.5 * PI, reduce_rad(14.5 * PI))
+        self.assertAlmostEqual(2.145_196_898, reduce_rad(33.561_123_432))
+
+    def test_below_reduction_interval(self):
+        self.assertAlmostEqual(-2 * PI, reduce_rad(-6 * PI))
+        self.assertAlmostEqual(-1 * PI, reduce_rad(-5 * PI))
+        self.assertAlmostEqual(-1.25 * PI, reduce_rad(-11.25 * PI))
+        self.assertAlmostEqual(-5.263_319_468, reduce_rad(-42.962_431_311))
+
+
 class TestSin(TestCase):
 
     def test_sin_commonly_known_values(self):

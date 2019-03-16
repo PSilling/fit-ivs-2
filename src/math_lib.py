@@ -122,6 +122,11 @@ def nrt(x, n):
         raise ValueError('Can\'t get 0th root of any number.')
 
 
+# TODO: rad reduction to <-2*PI; 2*PI> interval
+def reduce_rad(x):
+    return 0
+
+
 # TODO: sin of x
 def sin(x):
     return 0
