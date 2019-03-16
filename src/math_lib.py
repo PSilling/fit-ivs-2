@@ -84,7 +84,7 @@ def mod(x, y):
 # @exception ValueError if n is not an integer or if it's lower than 0.
 #
 def fact(n):
-    if n < 0 or n % 1 != 0:
+    if n < 0 or not isinstance(n, int):
         raise ValueError('Can\'t get factorial from non-integer or number lower than zero.')
     factorial = 1
     for i in range(1, n+1):
@@ -97,11 +97,11 @@ def fact(n):
 # @param x Number of which power is calculated.
 # @param exp Exponent.
 # @return Power of given number.
-# @exception ValueError if x is not an integer and is lower than 0.
+# @exception ValueError if exp is not a natural number.
 #
 def pow(x, exp):
-    if x < 0 and exp % 1 != 0:
-        raise ValueError('This library doesn\'t support complex numbers.')
+    if exp <= 0 or not isinstance(exp, int):
+        raise ValueError('This function supports natural exponent only.')
     return x ** exp
 
 
