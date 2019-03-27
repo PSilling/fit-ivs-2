@@ -1,22 +1,17 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'C:\Users\42190\PycharmProjects\IVS_UI\IVS_UI.ui'
+# Form implementation generated from reading ui file 'C:\Users\42190\PycharmProjects\IVS_UI\gui_calc.ui'
 #
-# ##
-# @file gui_calc.py
-# @brief Graphical user interface for calculator
-# @author Nikolas Rada <xradan00.stud.fit.vutbr.cz>
+# Created by: PyQt5 UI code generator 5.11.3
 #
-# Project: fit-ivs-2
-# Date created: 2019-03-17
-# Last modified: 2019-03-24
-#
-#
-# 
+# WARNING! All changes made in this file will be lost!
 
+from src.math_lib import *
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_MainWindow(object):
+    first_operand = 0
+    negate_operand = 0
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(503, 653)
@@ -32,7 +27,9 @@ class Ui_MainWindow(object):
 "\n"
 "QPushButton{background-color: \"transparent\";}\n"
 "\n"
-"QFrame{background-color: \"transparent\";}")
+"QFrame{background-color: \"transparent\";}\n"
+"\n"
+"QLabel{color: \"white\";}")
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
         self.frame.setGeometry(QtCore.QRect(0, 0, 501, 681))
@@ -287,13 +284,24 @@ class Ui_MainWindow(object):
         self.frame_3.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_3.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_3.setObjectName("frame_3")
-        self.textBrowser = QtWidgets.QTextBrowser(self.frame_3)
-        self.textBrowser.setGeometry(QtCore.QRect(70, 110, 281, 91))
-        self.textBrowser.setObjectName("textBrowser")
         self.label = QtWidgets.QLabel(self.frame_3)
-        self.label.setGeometry(QtCore.QRect(80, 40, 261, 51))
+        self.label.setGeometry(QtCore.QRect(70, 40, 271, 51))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.label.setFont(font)
+        self.label.setStyleSheet("color: rgb(255, 255, 255);")
         self.label.setText("")
+        self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName("label")
+        self.label_2 = QtWidgets.QLabel(self.frame_3)
+        self.label_2.setGeometry(QtCore.QRect(40, 110, 331, 71))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.label_2.setFont(font)
+        self.label_2.setStyleSheet("color: rgb(255, 255, 255);")
+        self.label_2.setText("")
+        self.label_2.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_2.setObjectName("label_2")
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -309,25 +317,25 @@ class Ui_MainWindow(object):
         self.seven.clicked.connect(self.print7)
         self.eight.clicked.connect(self.print8)
         self.nine.clicked.connect(self.print9)
-        self.pow.clicked.connect(self.printpow)
-        self.pow.clicked.connect(self.printpow)
-        self.clear.clicked.connect(self.printclear)
-        self.plusminus.clicked.connect(self.printplusminus)
-        self.mod.clicked.connect(self.printmod)
-        self.div.clicked.connect(self.printdiv)
-        self.mul.clicked.connect(self.printmul)
-        self.nrt.clicked.connect(self.printnrt)
-        self.nrt.clicked.connect(self.printnrt)
-        self.sin.clicked.connect(self.printsin)
-        self.asin.clicked.connect(self.printasin)
-        self.cos.clicked.connect(self.printcos)
-        self.acos.clicked.connect(self.printacos)
-        self.add.clicked.connect(self.printadd)
-        self.sub.clicked.connect(self.printsub)
+        self.pow.clicked.connect(self.setoperationpow)
+        self.pow_2.clicked.connect(self.setoperationpow_2)
+        self.plusminus.clicked.connect(self.setoperationplusminus)
+        self.mod.clicked.connect(self.setoperationmod)
+        self.div.clicked.connect(self.setoperationdiv)
+        self.mul.clicked.connect(self.setoperationmul)
+        self.nrt.clicked.connect(self.setoperationnrt)
+        self.nrt_2.clicked.connect(self.setoperationnrt_2)
+        self.sin.clicked.connect(self.setoperationsin)
+        self.asin.clicked.connect(self.setoperationasin)
+        self.cos.clicked.connect(self.setoperationcos)
+        self.acos.clicked.connect(self.setoperationacos)
+        self.add.clicked.connect(self.setoperationadd)
+        self.sub.clicked.connect(self.setoperationsub)
         self.dot.clicked.connect(self.printdot)
-        self.equals.clicked.connect(self.printequals)
-        self.pi.clicked.connect(self.printpi)
-        self.xfact.clicked.connect(self.printxfact)
+        self.equals.clicked.connect(self.finishoperation)
+        self.pi.clicked.connect(self.putpi)
+        self.xfact.clicked.connect(self.setoperationfact)
+        self.clear.clicked.connect(self.printclear)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -362,310 +370,151 @@ class Ui_MainWindow(object):
         self.pow_2.setText(_translate("MainWindow", "x^y"))
         self.add.setText(_translate("MainWindow", "+"))
 
+    def finishoperation(self):
+        if self.label.text() == " ":
+            print("som v ife")
+            self.label.setText(str(self.operation_callback(self.first_operand)))
+            self.label_2.setText("=")
+        else:
+            print("som v else")
+            self.label.setText(str(self.operation_callback(self.first_operand, int(self.label.text()))))  # UP line
+            self.label_2.setText("=")
+
+        # print(self.operation_callback(self.first_operand, float(self.label.text())))
+        # self.label.setText(str(self.callback_onedigit(self.first_operand)))
+
+    def setoperationmul(self):
+        self.first_operand = float(self.label.text())
+        self.operation_callback = mul
+        self.label.setText(" ")
+        self.label_2.setText("x")
+
+    def setoperationdiv(self):
+        self.first_operand = float(self.label.text())
+        self.operation_callback = div
+        self.label.setText(" ")
+        self.label_2.setText("÷")
+
+    def setoperationpow(self):
+        self.first_operand = float(self.label.text())
+        self.operation_callback = pow
+        self.label.setText("2")
+        self.label_2.setText("^")
+
+    def setoperationpow_2(self):
+        self.first_operand = float(self.label.text())
+        self.operation_callback = pow
+        self.label.setText(" ")
+        self.label_2.setText("^")
+
+    def setoperationadd(self):
+        self.first_operand = float(self.label.text())
+        self.operation_callback = add
+        self.label.setText(" ")
+        self.label_2.setText("+")
+
+    def setoperationsub(self):
+        self.first_operand = float(self.label.text())
+        self.operation_callback = sub
+        self.label.setText(" ")
+        self.label_2.setText("-")
+
+    def setoperationmod(self):
+        self.first_operand = float(self.label.text())
+        self.operation_callback = mod
+        self.label.setText(" ")
+        self.label_2.setText("%")
+
+    def setoperationnrt(self):
+        self.first_operand = float(self.label.text())
+        self.operation_callback = nrt
+        self.label.setText("2")
+        self.label_2.setText("√")
+
+    def setoperationnrt_2(self):
+        self.first_operand = float(self.label.text())
+        self.operation_callback = nrt
+        self.label.setText(" ")
+        self.label_2.setText("√")
+
+    def setoperationplusminus(self):
+        self.first_operand = float(self.label.text())
+        self.negate_operand = str(self.first_operand * (-1))
+        self.label.setText(self.negate_operand)
+
+    def setoperationfact(self):
+        self.first_operand = int(self.label.text())
+        self.operation_callback = fact
+        self.label.setText(" ")
+        self.label_2.setText("!")
+
+    def setoperationcos(self):
+        self.first_operand = float(self.label.text())
+        self.operation_callback = cos
+        self.label.setText(" ")
+        self.label_2.setText("cos")
+
+    def setoperationsin(self):
+        self.first_operand = float(self.label.text())
+        self.operation_callback = sin
+        self.label.setText(" ")
+        self.label_2.setText("sin")
+
+    def setoperationasin(self):
+        self.first_operand = float(self.label.text())
+        self.operation_callback = asin
+        self.label.setText(" ")
+        self.label_2.setText("sin-1")
+
+    def setoperationacos(self):
+        self.first_operand = float(self.label.text())
+        self.operation_callback = acos
+        self.label.setText(" ")
+        self.label_2.setText("cos-1")
+
+
+
     def print0(self):
-        #print("0") # UP line
-        self.label.setText("0")
-        
-    def print1():
-        x = 1
-        self.label.setText("1") # UP line
-        return x
-        
+            self.label.setText(self.label.text() + "0")
+
+    def print1(self):
+            self.label.setText(self.label.text() + "1")
+
     def print2(self):
-        self.label.setText("2") # UP line
-        y = 2
-        return y
-        
+            self.label.setText(self.label.text() + "2")
+
     def print3(self):
-        self.label.setText("3") # UP line
-        
+            self.label.setText(self.label.text() + "3")
+
     def print4(self):
-        self.label.setText("4") # UP line
-        
+            self.label.setText(self.label.text() + "4")
+
     def print5(self):
-        self.label.setText("5") # UP line
-        
+            self.label.setText(self.label.text() + "5")
+
     def print6(self):
-       self.label.setText("6") # UP line
-        
+            self.label.setText(self.label.text() + "6")
+
     def print7(self):
-       self.label.setText("7") # UP line
-        
+            self.label.setText(self.label.text() + "7")
+
     def print8(self):
-        self.label.setText("8") # UP line
-        
+            self.label.setText(self.label.text() + "8")
+
     def print9(self):
-        self.label.setText("9") # UP line
-        
-            ##
-    # @brief Nth root of a number.
-    # @param x Number of which root is calculated.
-    # @param n Exponent.
-    # @return Nth root of given number.
-    # @exception ValueError if n is lower than 0 and n isn't 1.
-    # @exception ZeroDivisionError if n equals to 0.
-    #
-    def printnrt(x, n):
-        self.label.setText("√") # UP line
-        if x < 0 and n != 1:
-            raise ValueError('This library doesn\'t support complex numbers.')
-        try:
-            return x ** (1 / n)
-        except ZeroDivisionError:
-            raise ValueError('Can\'t get 0th root of any number.')
+            self.label.setText(self.label.text() + "9")
 
-            ##
-    # @brief Power of a number.
-    # @param x Number of which power is calculated.
-    # @param exp Exponent.
-    # @return Power of given number.
-    # @exception ValueError if exp is not a natural number.
-    #
-    def printpow(x, exp):
-        self.label.setText("^") # UP line
-        if exp <= 0 or not isinstance(exp, int):
-            raise ValueError('This function supports natural exponent only.')
-        return x ** exp
-        
     def printclear(self):
-        print(" ") # UP line
-        
-    def printplusminus(self):
-        self.label.setText("±") # UP line
-          
-            ##
-    # @brief Modulo of 2 numbers.
-    # @param x Dividend.
-    # @param y Divisor.
-    # @return The remainder after division of 1st and 2nd number.
-    # @exception ZeroDivisionError if y (divisor) equals to 0.
-    #
-    def printmod(x, y):
-        self.label.setText("%") # UP line
-        try:
-            return x % y
-        except ZeroDivisionError as ex:
-            raise ex
-        
-            ##
-    # @brief Multiplication of 2 numbers.
-    # @param x 1st number.
-    # @param y 2nd number.
-    # @return Product of 1st and 2nd number.
-    #
-    def printmul(x, y):
-        self.label.setText("x") # UP line
-        return x * y
-        
-            ##
-    # @brief Division of 2 numbers.
-    # @param x Dividend.
-    # @param y Divisor.
-    # @return Quotient of 1st and 2nd number.
-    # @exception ZeroDivisionError if y (divisor) equals to zero.
-    #
-    def printdiv(x, y):
-        self.label.setText("÷") # UP line
-        try:
-            return x / y
-        except ZeroDivisionError as ex:
-            raise ex
+            self.label.setText(" ")
+            self.label_2.setText(" ")
 
-            ##
-    # @brief Reduce number to (-2*PI, 2*PI) range by subtracting/adding 2*PI.
-    # @param x Number to be reduced.
-    # @return x within (-2*PI, 2*PI) range with the same sine/cosine value as original x.
-    # Subtracts/adds 2*PI from/to the x value until it's within (-2*PI, 2*PI) range. Due to limited
-    # PI accuracy, this means the x gets less accurate the higher/lower it is in the beggining.
-    # This is neccessary because sin(x) and cos(x) with x values set too high or too low
-    # cause OverflowError.
-    #
-    def reduce_rad(x):
-        while x > 2*PI:
-            x -= 2*PI
-        while x < -2*PI:
-            x += 2*PI
-        return x
-
-            ##
-    # @brief Sine of a number using Taylor series.
-    # @param n Number of which sine is calculated in radians.
-    # @return Sine of given number.
-    # @see https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions
-    # Values outisde (-2*PI, 2*PI) range will be increased/decreased by 2*PI until they will
-    # get to that range. This shouldn't affect the result unless the x is ludicrously small/large.
-    #
-    def printsin(x):
-        self.label.setText("sin") # UP line
-        x = reduce_rad(x)
-
-        # Store values between iterations to prevent calculating the same values over and over again.
-        sinx = 0
-        odd = 1
-        facx = 1
-        powx = x
-
-        n = 0
-        while True:
-
-            # Calculate sine using Taylor series.
-            prev_sinx = sinx
-            sinx += odd * powx / facx
-            diff = sinx - prev_sinx
-
-            # If difference between result of this and last iteration is negligible, stop iterating.
-            if -acc < diff < acc:
-                break
-
-            # Increment values used in formula for next iteration.
-            n += 1
-            odd *= -1
-            facx *= (2 * n) * (2 * n + 1)
-            powx *= x * x
-
-        return sinx
-
-            ##
-    # @brief Arcsine of a number using Taylor series.
-    # @param n Number of which arcsine is calculated.
-    # @return Arcsine of given number in radians.
-    # @exception ValueError if x is outide the (-1, 1) range.
-    # @see https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions
-    # Values close to minimal/maximal allowed values (from +-0.999) will return set value
-    # of PI/2. Calculation of precise result for these values takes long time to process.
-    #
-    def printasin(x):
-        self.label.setText("sin-1") # UP line
-        if x < -1 or x > 1:
-            raise ValueError('Arcus sine isn\'t defined outside the <-1, 1> range.')
-        if x >= 0.999:
-            return PI / 2
-        if x <= -0.999:
-            return -PI / 2
-
-        # Store values between iterations to prevent calculating the same values over and over again.
-        asinx = 0
-        fac_even = 1
-        pow_facx = 1
-        pow_even = x
-        pow_4 = 1
-
-        n = 0
-        while True:
-
-            # Calculate arcsine using Taylor series.
-            prev_sinx = asinx
-            asinx += (fac_even / (pow_4*pow_facx*((n << 1) + 1))) * pow_even
-            diff = asinx - prev_sinx
-
-            # If difference between result of this and last iteration is negligible, stop iterating.
-            if -acc < diff < acc:
-                break
-
-            # Increment values used in formula for next iteration.
-            n += 1
-            fac_even *= (((n << 1) - 1) * (n << 1))
-            pow_facx *= n * n
-            pow_even *= x * x
-            pow_4 <<= 2
-
-        return asinx
-
-            ##
-    # @brief Cosine of a number using Taylor series.
-    # @param n Number of which sine is calculated in radians.
-    # @return Cosine of given number.
-    # @see https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions
-    # Values outisde (-2*PI, 2*PI) range will be increased/decreased by 2*PI until they will
-    # get to that range. This shouldn't affect the result unless the x is ludicrously small/large.
-    #
-    def printcos(x):
-        self.label.setText("cos") # UP line
-        x = reduce_rad(x)
-
-        # Store values between iterations to prevent calculating the same values over and over again.
-        cosx = 0
-        odd = 1
-        facx = 1
-        powx = 1
-
-        n = 0
-        while True:
-
-            # Calculate cosine using Taylor series.
-            prev_sinx = cosx
-            cosx += odd * powx / facx
-            diff = cosx - prev_sinx
-
-            # If difference between result of this and last iteration is negligible, stop iterating.
-            if -acc < diff < acc:
-                break
-
-            # Increment values used in formula for next iteration.
-            n += 1
-            odd *= -1
-            facx *= (2*n - 1) * (2*n)
-            powx *= x * x
-
-        return cosx
-
-            ##
-    # @brief Arccosine of a number using Taylor series.
-    # @param n Number of which arccosine is calculated.
-    # @return Arccosine of given number in radians.
-    # @exception ValueError if x is outide the (-1, 1) range.
-    # @see https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions
-    # Values close to minimal/maximal allowed values (from +-0.999) will return set values
-    # of 0 and PI. Calculation of precise result for these values takes long time to process.
-    #
-    def printacos(x):
-        self.label.setText("cos-1") # UP line
-        return PI/2 - asin(x)
-    
-            ##
-    # @brief Addition of 2 numbers.
-    # @param x 1st number.
-    # @param y 2nd number.
-    # @return Sum of 1st and 2nd number.
-    #
-    def printadd(x, y):
-        self.label.setText("+") # UP line
-        return x + y
-
-            ##
-    # @brief Subtraction of 2 numbers.
-    # @param x 1st number.
-    # @param y 2nd number.
-    # @return Difference of 1st and 2nd number.
-    #
-    def printsub(x, y):
-        self.label.setText("-") # UP line
-        return x - y
-        
     def printdot(self):
-        self.label.setText(".") # UP line
-        
-    def printequals(self):
-        self.label.setText("=") # UP line
-        
-    def printpi(x):
-        self.label.setText("π") # UP line
-        x = 3.141_592_653_589_793
+            self.label.setText(self.label.text() + ".")
 
-            ##
-    # @brief Factorial of a number.
-    # @param n Number of which factorial is calculated.
-    # @return Factorial of given number.
-    # @exception ValueError if n is not an integer or if it's lower than 0.
-    #
-    def printxfact(n):
-        self.label.setText("x!") # UP line
-        if n < 0 or not isinstance(n, int):
-            raise ValueError('Can\'t get factorial from non-integer or number lower than zero.')
-        factorial = 1
-        for i in range(1, n+1):
-            factorial *= i
-        return factorial
+    def putpi(self):
+            self.label.setText(self.label.text() + "3.141592653589793")
+            self.label_2.setText("π")
+
 
 if __name__ == "__main__":
     import sys
