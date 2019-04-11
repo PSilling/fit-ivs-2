@@ -16,7 +16,6 @@
 from src.math_lib import *
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-
 class Ui_MainWindow(object):
     operation_callback = None  # currently selected operation pointer
     operand_count = -1  # number of operands necessary for the current operation (1 for sin, 2 for add and so on)
@@ -319,37 +318,37 @@ class Ui_MainWindow(object):
 
         # number buttons
         self.zero.clicked.connect(self.print_zero)
-        self.one.clicked.connect(self.print1)
-        self.two.clicked.connect(self.print2)
-        self.three.clicked.connect(self.print3)
-        self.four.clicked.connect(self.print4)
-        self.five.clicked.connect(self.print5)
-        self.six.clicked.connect(self.print6)
-        self.seven.clicked.connect(self.print7)
-        self.eight.clicked.connect(self.print8)
-        self.nine.clicked.connect(self.print9)
+        self.one.clicked.connect(self.print_one)
+        self.two.clicked.connect(self.print_two)
+        self.three.clicked.connect(self.print_three)
+        self.four.clicked.connect(self.print_four)
+        self.five.clicked.connect(self.print_five)
+        self.six.clicked.connect(self.print_six)
+        self.seven.clicked.connect(self.print_seven)
+        self.eight.clicked.connect(self.print_eight)
+        self.nine.clicked.connect(self.print_nine)
 
         # math operation buttons
-        self.pow.clicked.connect(self.setoperationpow)
-        self.pow_2.clicked.connect(self.setoperationpow_2)
-        self.mod.clicked.connect(self.setoperationmod)
-        self.div.clicked.connect(self.setoperationdiv)
+        self.pow.clicked.connect(self.set_pow)
+        self.pow_2.clicked.connect(self.set_pow_two)
+        self.mod.clicked.connect(self.set_mod)
+        self.div.clicked.connect(self.set_div)
         self.mul.clicked.connect(self.set_mul)
-        self.nrt.clicked.connect(self.setoperationnrt)
-        self.nrt_2.clicked.connect(self.setoperationnrt_2)
-        self.sin.clicked.connect(self.setoperationsin)
-        self.asin.clicked.connect(self.setoperationasin)
+        self.nrt.clicked.connect(self.set_nrt)
+        self.nrt_2.clicked.connect(self.set_nrt_two)
+        self.sin.clicked.connect(self.set_sin)
+        self.asin.clicked.connect(self.set_asin)
         self.cos.clicked.connect(self.set_cos)
-        self.acos.clicked.connect(self.setoperationacos)
-        self.add.clicked.connect(self.setoperationadd)
-        self.sub.clicked.connect(self.setoperationsub)
-        self.xfact.clicked.connect(self.setoperationfact)
+        self.acos.clicked.connect(self.set_acos)
+        self.add.clicked.connect(self.set_add)
+        self.sub.clicked.connect(self.set_sub)
+        self.xfact.clicked.connect(self.set_fact)
 
         # special buttons
         self.equals.clicked.connect(self.calculate_result)
         self.plusminus.clicked.connect(self.swap_sign)
-        self.clear.clicked.connect(self.printclear)
-        self.dot.clicked.connect(self.printdot)
+        self.clear.clicked.connect(self.set_clear)
+        self.dot.clicked.connect(self.print_dot)
         self.pi.clicked.connect(self.putpi)
 
     def retranslateUi(self, MainWindow):
@@ -435,146 +434,32 @@ class Ui_MainWindow(object):
         finally:
             self.label_2.setText(str(result))
 
-    # TODO: combine dual operand operation setters into a shared method.
-    #       Also rename them using the naming convention below (this applies to single operation methods as well).
     def set_mul(self):
         self.set_operation(mul, 2, "×")
 
-    def setoperationdiv(self):
-        if '÷' in self.label_2.text():
-            self.label_2.setText("÷")
+    def set_div(self):
+        self.set_operation(div, 2, "÷")
 
-        elif self.label_2.text() == "-" or "x" or "=" or "%" or "√" or "!" or "cos" or "sin" or \
-        ("acos(%d)" %(self.first_operand)) or ("asin(%d)" %(self.first_operand)) or "^" or "+":
-            if self.first_operand == 0:
-                self.first_operand = float(self.label.text())
-                self.operation_callback = div
-                self.label.setText(" ")
-                self.label_2.setText("÷")
-                return self.first_operand
-            else:
-                self.operation_callback = div
-                self.label.setText(" ")
-                self.label_2.setText("÷")
+    def set_pow(self):
+        self.set_operation(pow, 2, "^")
 
-    def setoperationpow(self):
-        if self.label_2.text() == "-" or "x" or "=" or "%" or "√" or "!" or "cos" or "sin" or \
-        ("acos(%d)" %(self.first_operand)) or ("asin(%d)" %(self.first_operand)) or "÷" or "+":
-            if self.first_operand == 0:
-                self.first_operand = float(self.label.text())
-                self.operation_callback = pow
-                self.label.setText("2")
-                self.label_2.setText("^")
-                return self.first_operand
-            else:
-                self.operation_callback = pow
-                self.label.setText("2")
-                self.label_2.setText("^")
+    def set_pow_two(self):
+        self.set_operation(pow, 2, "^")
 
-    def setoperationpow_2(self):
-        if '^' in self.label_2.text():
-            self.label_2.setText("^")
+    def set_add(self):
+        self.set_operation(add, 2, "+")
 
-        elif self.label_2.text() == "-" or "x" or "=" or "%" or "√" or "!" or "cos" or "sin" or \
-        ("acos(%d)" %(self.first_operand)) or ("asin(%d)" %(self.first_operand)) or "÷" or "+":
-            if self.first_operand == 0:
-                self.first_operand = float(self.label.text())
-                self.operation_callback = pow
-                self.label.setText(" ")
-                self.label_2.setText("^")
-                return self.first_operand
-            else:
-                self.operation_callback = pow
-                self.label.setText(" ")
-                self.label_2.setText("^")
-    # TODO: scan the file for all unnecessary prints and random comments like the one below. Also do not forget to
-    #       remove TODOs when appropriate (after you fix the given issue, that is) and remember to have atomic commits!
-    #       For atomic commits you can use https://www.freshconsulting.com/atomic-commits/ for more information.
-    # 8*8 cos 4
-    # 0 - +
-    # ked nema 2.operand
+    def set_sub(self):
+        self.set_operation(sub, 2, "-")
 
-    def setoperationadd(self):
-        if '+' in self.label_2.text():
-            self.label_2.setText("+")
-        elif self.label_2.text() == "-" or "x" or "=" or "%" or "√" or "!" or "cos" or "sin" or \
-        ("acos(%d)" %(self.first_operand)) or ("asin(%d)" %(self.first_operand)) or "^" or "÷":
-            if self.first_operand == 0:
-                self.first_operand = float(self.label.text())
-                self.operation_callback = add
-                self.label.setText(" ")
-                self.label_2.setText("+")
-                return self.first_operand
-            else:
-                self.operation_callback = add
-                self.label.setText(" ")
-                self.label_2.setText("+")
-                return self.first_operand
+    def set_mod(self):
+        self.set_operation(mod, 2, "%")
 
-    def setoperationsub(self):
-        if '-' in self.label_2.text():
-            self.label_2.setText("-")
+    def set_nrt(self):
+        self.set_operation(nrt, 2, "√")
 
-        elif self.label_2.text() == "^" or "x" or "=" or "%" or "√" or "!" or "cos" or "sin" \
-        or ("acos(%d)" %(self.first_operand)) or ("asin(%d)" %(self.first_operand)) or "÷" or "+":
-            if self.first_operand == 0:
-                self.first_operand = float(self.label.text())
-                self.operation_callback = sub
-                self.label.setText(" ")
-                self.label_2.setText("-")
-                return self.first_operand
-            else:
-                self.operation_callback = sub
-                self.label.setText(" ")
-                self.label_2.setText("-")
-
-    def setoperationmod(self):
-        if '%' in self.label_2.text():
-            self.label_2.setText("%")
-
-        elif self.label_2.text() == "^" or "x" or "=" or "%" or "√" or "!" or "cos" or "sin" or \
-        ("acos(%d)" %(self.first_operand)) or ("asin(%d)" %(self.first_operand)) or "-" or "+":
-            if self.first_operand == 0:
-                self.first_operand = float(self.label.text())
-                self.operation_callback = mod
-                self.label.setText(" ")
-                self.label_2.setText("%")
-                return self.first_operand
-            else:
-                self.operation_callback = mod
-                self.label.setText(" ")
-                self.label_2.setText("%")
-
-    def setoperationnrt(self):
-        if self.label_2.text() == "^" or "x" or "=" or "%" or "%" or "!" or "cos" or "sin" or \
-        ("acos(%d)" %(self.first_operand)) or ("asin(%d)" %(self.first_operand)) or "-" or "+":
-            if self.first_operand == 0:
-                self.first_operand = float(self.label.text())
-                self.operation_callback = nrt
-                self.label.setText("2")
-                self.label_2.setText("√")
-                return self.first_operand
-            else:
-                self.operation_callback = nrt
-                self.label.setText("2")
-                self.label_2.setText("√")
-
-    def setoperationnrt_2(self):
-        if '√' in self.label_2.text():
-            self.label_2.setText("√")
-
-        elif self.label_2.text() == "^" or "x" or "=" or "%" or "%" or "!" or "cos" or "sin" or \
-        ("acos(%d)" %(self.first_operand)) or ("asin(%d)" %(self.first_operand)) or "-" or "+":
-            if self.first_operand == 0:
-                self.first_operand = float(self.label.text())
-                self.operation_callback = nrt
-                self.label.setText(" ")
-                self.label_2.setText("√")
-                return self.first_operand
-            else:
-                self.operation_callback = nrt
-                self.label.setText(" ")
-                self.label_2.setText("√")
+    def set_nrt_two(self):
+        self.set_operation(nrt, 2, "√")
 
     def swap_sign(self):
         parsed_input = self.label.text().split(" ")
@@ -598,340 +483,65 @@ class Ui_MainWindow(object):
                 self.label.setText(parsed_input[0] + " " + parsed_input[1] + " " + parsed_input[2][1:])
 
     # TODO: combine single operand operation setters into a shared method.
-    def setoperationfact(self):
-        if '!' in self.label_2.text():
-            self.label_2.setText("!")
-
-        elif self.label_2.text() == "^" or "x" or "=" or "%" or "%" or "√" or "cos" or "sin" or \
-        ("acos(%d)" %(self.first_operand)) or ("asin(%d)" %(self.first_operand)) or "-" or "+":
-            if self.first_operand == 0:
-                self.first_operand = int(self.label.text())
-                self.operation_callback = fact
-                self.label.setText(" ")
-                self.label_2.setText("!")
-                return self.first_operand
-            else:
-                self.operation_callback = fact
-                self.label.setText(" ")
-                self.label_2.setText("!")
+    def set_fact(self):
+        self.set_operation(fact, 1, "!")
 
     def set_cos(self):
         self.set_operation(cos, 1, "cos")
 
-    def setoperationsin(self):
-        if 'sin' in self.label_2.text():
-            self.label_2.setText("sin")
+    def set_sin(self):
+        self.set_operation(sin, 1, "sin")
 
-        elif self.label_2.text() == "^" or "x" or "=" or "%" or "%" or "√" or "!" or "cos" or \
-        ("acos(%d)" %(self.first_operand)) or ("asin(%d)" %(self.first_operand)) or "-" or "+":
-            if self.first_operand == 0:
-                self.first_operand = float(self.label.text())
-                self.operation_callback = sin
-                self.label.setText(" ")
-                self.label_2.setText("sin")
-                return self.first_operand
-            else:
-                self.operation_callback = sin
-                self.label.setText(" ")
-                self.label_2.setText("sin")
+    def set_asin(self):
+        self.set_operation(asin, 1, "asin")
 
-    def setoperationasin(self):
-        if 'asin' in self.label_2.text():
-            self.label_2.setText("asin(%d)" %(self.first_operand))
-
-        elif self.label_2.text() == "^" or "x" or "=" or "%" or "%" or "√" or "!" or "cos" or \
-        ("acos(%d)" %(self.first_operand)) or "sin" or "-" or "+":
-            if self.first_operand < -1 or self.first_operand > 1:
-                    self.label.setText(" NaN ")
-                    self.label_2.setText("asin(%d)" % (self.first_operand))
-            else:
-                self.first_operand = float(self.label.text())
-                if self.first_operand < -1 or self.first_operand > 1:
-                    self.label.setText(" NaN ")
-                    self.label_2.setText("asin(%d)" % (self.first_operand))
-                else:
-                    self.operation_callback = asin
-                    self.label.setText(" ")
-                    self.label_2.setText("asin(%d)" % (self.first_operand))
-
-    def setoperationacos(self):
-        if 'acos' in self.label_2.text():
-            self.label_2.setText("acos(%d)" %(self.first_operand))
-
-        elif self.label_2.text() == "^" or "x" or "=" or "%" or "%" or "√" or "!" or "cos" or \
-        "sin" or ("asin(%d)" %(self.first_operand)) or "-" or "+":
-            if self.first_operand < -1 or self.first_operand > 1:
-                self.label.setText(" NaN ")
-                self.label_2.setText("acos(%d)" % (self.first_operand))
-            else:
-                self.first_operand = float(self.label.text())
-                if self.first_operand < -1 or self.first_operand > 1:
-                    self.label.setText(" NaN ")
-                    self.label_2.setText("acos(%d)" % (self.first_operand))
-                else:
-                    self.operation_callback = acos
-                    self.label.setText(" ")
-                    self.label_2.setText("acos(%d)" % (self.first_operand))
+    def set_acos(self):
+        self.set_operation(asin, 1, "acos")
 
     # TODO: combine print_number methods into a shared method.
     #       Look for PyQt's self.sender() reference (__init__ setup will be necessary).
+
     def print_zero(self):
         self.label.setText(self.label.text() + self.zero.text())
 
-    def print1(self):
-        if 'sin' in self.label_2.text():
-            self.label.setText("One operand only!")
-            self.label_2.setText(" ")
+    def print_one(self):
+        self.label.setText(self.label.text() + self.one.text())
 
-        elif '!' in self.label_2.text():
-            self.label.setText("One operand only!")
-            self.label_2.setText(" ")
+    def print_two(self):
+        self.label.setText(self.label.text() + self.two.text())
 
-        elif 'π' in self.label_2.text():
-            self.label.setText("1")
-            self.label_2.setText(" ")
+    def print_three(self):
+        self.label.setText(self.label.text() + self.three.text())
 
-        elif 'cos' in self.label_2.text():
-            self.label.setText("One operand only!")
-            self.label_2.setText(" ")
+    def print_four(self):
+        self.label.setText(self.label.text() + self.four.text())
 
-        elif '=' in self.label_2.text():
-             self.label.setText("1")
-             self.label_2.setText(" ")
+    def print_five(self):
+        self.label.setText(self.label.text() + self.five.text())
 
-        else:
-            if self.label.text() == "0":
-                self.label.setText("1")
-            else:
-                self.label.setText(self.label.text() + "1")
+    def print_six(self):
+        self.label.setText(self.label.text() + self.six.text())
 
-    def print2(self):
-        if 'sin' in self.label_2.text():
-            self.label.setText("One operand only!")
-            self.label_2.setText(" ")
+    def print_seven(self):
+        self.label.setText(self.label.text() + self.seven.text())
 
-        elif '!' in self.label_2.text():
-            self.label.setText("One operand only!")
-            self.label_2.setText(" ")
+    def print_eight(self):
+        self.label.setText(self.label.text() + self.eight.text())
 
-        elif 'π' in self.label_2.text():
-            self.label.setText("2")
-            self.label_2.setText(" ")
+    def print_nine(self):
+        self.label.setText(self.label.text() + self.nine.text())
 
-        elif 'cos' in self.label_2.text():
-            self.label.setText("One operand only!")
-            self.label_2.setText(" ")
-
-        elif '=' in self.label_2.text():
-              self.label.setText("2")
-              self.label_2.setText(" ")
-
-        else:
-            if self.label.text() == "0":
-                self.label.setText("2")
-            else:
-                self.label.setText(self.label.text() + "2")
-
-    def print3(self):
-        if 'sin' in self.label_2.text():
-            self.label.setText("One operand only!")
-            self.label_2.setText(" ")
-
-        elif '!' in self.label_2.text():
-            self.label.setText("One operand only!")
-            self.label_2.setText(" ")
-
-        elif 'π' in self.label_2.text():
-            self.label.setText("3")
-            self.label_2.setText(" ")
-
-        elif 'cos' in self.label_2.text():
-            self.label.setText("One operand only!")
-            self.label_2.setText(" ")
-
-        elif '=' in self.label_2.text():
-             self.label.setText("3")
-             self.label_2.setText(" ")
-
-        else:
-            if self.label.text() == "0":
-                self.label.setText("3")
-            else:
-                self.label.setText(self.label.text() + "3")
-
-    def print4(self):
-        if 'sin' in self.label_2.text():
-            self.label.setText("One operand only!")
-            self.label_2.setText(" ")
-
-        elif '!' in self.label_2.text():
-            self.label.setText("One operand only!")
-            self.label_2.setText(" ")
-
-        elif 'π' in self.label_2.text():
-            self.label.setText("4")
-            self.label_2.setText(" ")
-
-        elif 'cos' in self.label_2.text():
-            self.label.setText("One operand only!")
-            self.label_2.setText(" ")
-
-        elif '=' in self.label_2.text():
-             self.label.setText("4")
-             self.label_2.setText(" ")
-
-        else:
-            if self.label.text() == "0":
-                self.label.setText("4")
-            else:
-                self.label.setText(self.label.text() + "4")
-
-    def print5(self):
-        if 'sin' in self.label_2.text():
-            self.label.setText("One operand only!")
-            self.label_2.setText(" ")
-
-        elif '!' in self.label_2.text():
-            self.label.setText("One operand only!")
-            self.label_2.setText(" ")
-
-        elif 'π' in self.label_2.text():
-            self.label.setText("5")
-            self.label_2.setText(" ")
-
-        elif 'cos' in self.label_2.text():
-            self.label.setText("One operand only!")
-            self.label_2.setText(" ")
-
-        elif '=' in self.label_2.text():
-             self.label.setText("5")
-             self.label_2.setText(" ")
-
-        else:
-            if self.label.text() == "0":
-                self.label.setText("5")
-            else:
-                self.label.setText(self.label.text() + "5")
-
-    def print6(self):
-        if 'sin' in self.label_2.text():
-            self.label.setText("One operand only!")
-            self.label_2.setText(" ")
-
-        elif '!' in self.label_2.text():
-            self.label.setText("One operand only!")
-            self.label_2.setText(" ")
-
-        elif 'π' in self.label_2.text():
-            self.label.setText("6")
-            self.label_2.setText(" ")
-
-        elif 'cos' in self.label_2.text():
-            self.label.setText("One operand only!")
-            self.label_2.setText(" ")
-
-        elif '=' in self.label_2.text():
-             self.label.setText("6")
-             self.label_2.setText(" ")
-
-        else:
-            if self.label.text() == "0":
-                self.label.setText("6")
-            else:
-                self.label.setText(self.label.text() + "6")
-
-    def print7(self):
-        if 'sin' in self.label_2.text():
-            self.label.setText("One operand only!")
-            self.label_2.setText(" ")
-
-        elif '!' in self.label_2.text():
-            self.label.setText("One operand only!")
-            self.label_2.setText(" ")
-
-        elif 'π' in self.label_2.text():
-            self.label.setText("7")
-            self.label_2.setText(" ")
-
-        elif 'cos' in self.label_2.text():
-            self.label.setText("One operand only!")
-            self.label_2.setText(" ")
-
-        elif '=' in self.label_2.text():
-             self.label.setText("7")
-             self.label_2.setText(" ")
-
-        else:
-            if self.label.text() == "0":
-                self.label.setText("7")
-            else:
-                self.label.setText(self.label.text() + "7")
-
-    def print8(self):
-        if 'sin' in self.label_2.text():
-            self.label.setText("One operand only!")
-            self.label_2.setText(" ")
-
-        elif '!' in self.label_2.text():
-            self.label.setText("One operand only!")
-            self.label_2.setText(" ")
-
-        elif 'π' in self.label_2.text():
-            self.label.setText("8")
-            self.label_2.setText(" ")
-
-        elif 'cos' in self.label_2.text():
-            self.label.setText("One operand only!")
-            self.label_2.setText(" ")
-
-        elif '=' in self.label_2.text():
-             self.label.setText("8")
-             self.label_2.setText(" ")
-
-        else:
-            if self.label.text() == "0":
-                self.label.setText("8")
-            else:
-                self.label.setText(self.label.text() + "8")
-
-    def print9(self):
-        if 'sin' in self.label_2.text():
-            self.label.setText("One operand only!")
-            self.label_2.setText(" ")
-
-        elif '!' in self.label_2.text():
-            self.label.setText("One operand only!")
-            self.label_2.setText(" ")
-
-        elif 'π' in self.label_2.text():
-            self.label.setText("9")
-            self.label_2.setText(" ")
-
-        elif 'cos' in self.label_2.text():
-            self.label.setText("One operand only!")
-            self.label_2.setText(" ")
-
-        elif '=' in self.label_2.text():
-             self.label.setText("9")
-             self.label_2.setText(" ")
-
-        else:
-            if self.label.text() == "0":
-                self.label.setText("9")
-            else:
-                self.label.setText(self.label.text() + "9")
-
-    # TODO: rename (clear does not print anything, does it?) and reimplement
-    def printclear(self):
+    # TODO: Reimplement
+    def set_clear(self):
             self.label.setText(" ")
             self.label.setText("0")
             self.label_2.setText(" ")
             self.first_operand = 0
 
-    # TODO: rename to print_dot (use underscores in all the other methods as well!). Also, this just does not work.
+    # TODO:
     #       There CAN be two dots (one in the first, one in the second operand).
     #       Please fix (for example test using the string split method).
-    def printdot(self):
+    def print_dot(self):
             if '.' in self.label.text():
                 self.label.setText(self.label.text())
             if '.' not in self.label.text():
