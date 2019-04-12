@@ -11,7 +11,7 @@
 
 # Project: fit-ivs-2
 # Date created: 2019-03-16
-# Last modified: 2019-04-11
+# Last modified: 2019-04-13
 
 from src.math_lib import *
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -329,13 +329,13 @@ class Ui_MainWindow(object):
         self.nine.clicked.connect(self.print_nine)
 
         # math operation buttons
-        self.pow.clicked.connect(self.set_pow)
-        self.pow_2.clicked.connect(self.set_pow_two)
+        self.pow_2.clicked.connect(self.set_pow)
+        self.pow.clicked.connect(self.set_pow_two)
         self.mod.clicked.connect(self.set_mod)
         self.div.clicked.connect(self.set_div)
         self.mul.clicked.connect(self.set_mul)
-        self.nrt.clicked.connect(self.set_nrt)
-        self.nrt_2.clicked.connect(self.set_nrt_two)
+        self.nrt_2.clicked.connect(self.set_nrt)
+        self.nrt.clicked.connect(self.set_nrt_two)
         self.sin.clicked.connect(self.set_sin)
         self.asin.clicked.connect(self.set_asin)
         self.cos.clicked.connect(self.set_cos)
@@ -349,7 +349,7 @@ class Ui_MainWindow(object):
         self.plusminus.clicked.connect(self.swap_sign)
         self.clear.clicked.connect(self.set_clear)
         self.dot.clicked.connect(self.print_dot)
-        self.pi.clicked.connect(self.putpi)
+        self.pi.clicked.connect(self.print_pi)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -396,7 +396,7 @@ class Ui_MainWindow(object):
     # @param callback       Function pointer to be set
     # @param operand_count  Number of parameters necessary for the given callback
     # @param symbol         Symbol(s) to print inside the label
-    def set_operation(self, callback, operand_count, symbol):
+    def set_operation(self, callback, operand_count, symbol, set_two):
         if (operand_count != 1 and len(self.label.text()) == 0)\
                 or operand_count < 1 or operand_count > 2 or callback is None:
             return
@@ -406,6 +406,10 @@ class Ui_MainWindow(object):
 
         if operand_count == 1:
             self.label.setText(symbol + " " + self.label.text())
+
+        elif set_two == 1:
+            self.label.setText(self.label.text() + " " + symbol + " " + "2")
+
         else:
             self.label.setText(self.label.text() + " " + symbol + " ")
 
@@ -425,8 +429,13 @@ class Ui_MainWindow(object):
         try:
             if self.operand_count == 1:
                 result = self.operation_callback(float(parsed_input[0]))
+
+            elif self.operation_callback == pow or nrt:
+                result = self.operation_callback(float(parsed_input[0]), int(parsed_input[2]))
+
             else:
                 result = self.operation_callback(float(parsed_input[0]), float(parsed_input[2]))
+
         # TODO: Handle all the math exceptions and write an error message inside label_2. Do not forget the fact that
         #       the error message should be converted to a number (e.g. to zero) when nesting operations.
         except ValueError:
@@ -435,31 +444,31 @@ class Ui_MainWindow(object):
             self.label_2.setText(str(result))
 
     def set_mul(self):
-        self.set_operation(mul, 2, "×")
+        self.set_operation(mul, 2, "×", 0)
 
     def set_div(self):
-        self.set_operation(div, 2, "÷")
+        self.set_operation(div, 2, "÷", 0)
 
     def set_pow(self):
-        self.set_operation(pow, 2, "^")
+        self.set_operation(pow, 2, "^", 0)
 
     def set_pow_two(self):
-        self.set_operation(pow, 2, "^")
+        self.set_operation(pow, 2, "^", 1)
 
     def set_add(self):
-        self.set_operation(add, 2, "+")
+        self.set_operation(add, 2, "+", 0)
 
     def set_sub(self):
-        self.set_operation(sub, 2, "-")
+        self.set_operation(sub, 2, "-", 0)
 
     def set_mod(self):
-        self.set_operation(mod, 2, "%")
+        self.set_operation(mod, 2, "%", 0)
 
     def set_nrt(self):
-        self.set_operation(nrt, 2, "√")
+        self.set_operation(nrt, 2, "√", 0)
 
     def set_nrt_two(self):
-        self.set_operation(nrt, 2, "√")
+        self.set_operation(nrt, 2, "√", 1)
 
     def swap_sign(self):
         parsed_input = self.label.text().split(" ")
@@ -484,28 +493,60 @@ class Ui_MainWindow(object):
 
     # TODO: combine single operand operation setters into a shared method.
     def set_fact(self):
-        self.set_operation(fact, 1, "!")
+        self.set_operation(fact, 1, "!", 0)
 
     def set_cos(self):
-        self.set_operation(cos, 1, "cos")
+        self.set_operation(cos, 1, "cos", 0)
 
     def set_sin(self):
-        self.set_operation(sin, 1, "sin")
+        self.set_operation(sin, 1, "sin", 0)
 
     def set_asin(self):
-        self.set_operation(asin, 1, "asin")
+        self.set_operation(asin, 1, "asin", 0)
 
     def set_acos(self):
-        self.set_operation(asin, 1, "acos")
+        self.set_operation(asin, 1, "acos", 0)
 
     # TODO: combine print_number methods into a shared method.
     #       Look for PyQt's self.sender() reference (__init__ setup will be necessary).
 
     def print_zero(self):
-        self.label.setText(self.label.text() + self.zero.text())
+        parsed_input = self.label.text().split(" ")
+        parsed_input_length = len(parsed_input)
+
+        if parsed_input_length == 1:
+            if '0' in parsed_input[0][0]:
+                self.label.setText(parsed_input[0])
+
+                if '.' in parsed_input[0]:
+                    self.label.setText(parsed_input[0] + self.zero.text())
+            else:
+                self.label.setText(parsed_input[0] + self.zero.text())
+
+        if parsed_input_length == 2:
+            if '0' in parsed_input[1][0]:
+                self.label.setText(parsed_input[0] + " " + parsed_input[1])
+
+                if '.' in parsed_input[1]:
+                    self.label.setText(parsed_input[0] + " " + parsed_input[1] + self.zero.text())
+
+            else:
+                self.label.setText(parsed_input[0] + " " + parsed_input[1] + self.zero.text())
+
+        if parsed_input_length == 3:
+            if '.' in parsed_input[2]:
+                (self.label.setText(parsed_input[0] + " " + parsed_input[1] +
+                                    " " + parsed_input[2] + self.zero.text()))
+
+            else:
+                (self.label.setText(parsed_input[0] + " " + parsed_input[1] +
+                 " " + self.zero.text()))
 
     def print_one(self):
-        self.label.setText(self.label.text() + self.one.text())
+        if '0' in self.label.text():
+            self.label.setText(self.one.text())
+        else:
+            self.label.setText(self.label.text() + self.one.text())
 
     def print_two(self):
         self.label.setText(self.label.text() + self.two.text())
@@ -531,24 +572,37 @@ class Ui_MainWindow(object):
     def print_nine(self):
         self.label.setText(self.label.text() + self.nine.text())
 
-    # TODO: Reimplement
     def set_clear(self):
-            self.label.setText(" ")
             self.label.setText("0")
             self.label_2.setText(" ")
-            self.first_operand = 0
 
-    # TODO:
-    #       There CAN be two dots (one in the first, one in the second operand).
-    #       Please fix (for example test using the string split method).
     def print_dot(self):
-            if '.' in self.label.text():
-                self.label.setText(self.label.text())
-            if '.' not in self.label.text():
-                self.label.setText(self.label.text() + ".")
+        parsed_input = self.label.text().split(" ")
+        parsed_input_length = len(parsed_input)
+
+        if parsed_input_length == 1:
+            if '.' not in parsed_input[0]:
+                self.label.setText(parsed_input[0] + ".")
+
+            if '.' in parsed_input[0]:
+                self.label.setText(parsed_input[0])
+
+        elif parsed_input_length == 2:
+            if '.' not in parsed_input[1]:
+                self.label.setText(parsed_input[0] + " " + parsed_input[1] + ".")
+
+            if '.' in parsed_input[1]:
+                self.label.setText(parsed_input[0] + " " + parsed_input[1] + ".")
+
+        elif parsed_input_length == 3:
+            if '.' not in parsed_input[2]:
+                self.label.setText(parsed_input[0] + " " + parsed_input[1] + " " + parsed_input[2] + ".")
+
+            if '.' in parsed_input[2]:
+                self.label.setText(parsed_input[0] + " " + parsed_input[1] + " " + parsed_input[2])
 
     # TODO: here check which operand is being written. Based on that replace the operand value with PI value.
-    def putpi(self):
+    def print_pi(self):
         if 'π' in self.label_2.text():
             self.label.setText("3.141592653589793")
 
