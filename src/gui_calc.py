@@ -396,7 +396,7 @@ class Ui_MainWindow(object):
     # @param callback       Function pointer to be set
     # @param operand_count  Number of parameters necessary for the given callback
     # @param symbol         Symbol(s) to print inside the label
-    def set_operation(self, callback, operand_count, symbol, set_two):
+    def set_operation(self, callback, operand_count, symbol):
         if (operand_count != 1 and len(self.label.text()) == 0)\
                 or operand_count < 1 or operand_count > 2 or callback is None:
             return
@@ -406,10 +406,6 @@ class Ui_MainWindow(object):
 
         if operand_count == 1:
             self.label.setText(symbol + " " + self.label.text())
-
-        elif set_two == 1:
-            self.label.setText(self.label.text() + " " + symbol + " " + "2")
-
         else:
             self.label.setText(self.label.text() + " " + symbol + " ")
 
@@ -428,11 +424,16 @@ class Ui_MainWindow(object):
         result = float("nan")
         try:
             if self.operand_count == 1:
-                result = self.operation_callback(float(parsed_input[0]))
+                result = self.operation_callback(float(parsed_input[1]))
 
-            elif self.operation_callback == pow or nrt:
+            elif self.operation_callback == (pow or nrt):
                 result = self.operation_callback(float(parsed_input[0]), int(parsed_input[2]))
 
+            elif self.operation_callback == div:
+                if parsed_input[2] == '0':
+                    result = "Error division by zero!"
+                else:
+                    result = self.operation_callback(float(parsed_input[0]), float(parsed_input[2]))
             else:
                 result = self.operation_callback(float(parsed_input[0]), float(parsed_input[2]))
 
@@ -444,31 +445,33 @@ class Ui_MainWindow(object):
             self.label_2.setText(str(result))
 
     def set_mul(self):
-        self.set_operation(mul, 2, "×", 0)
+        self.set_operation(mul, 2, "×")
 
     def set_div(self):
-        self.set_operation(div, 2, "÷", 0)
+        self.set_operation(div, 2, "÷")
 
     def set_pow(self):
-        self.set_operation(pow, 2, "^", 0)
+        self.set_operation(pow, 2, "^")
 
     def set_pow_two(self):
-        self.set_operation(pow, 2, "^", 1)
+        self.set_operation(pow, 2, "^")
+        self.label.setText(self.label.text() + "2")
 
     def set_add(self):
-        self.set_operation(add, 2, "+", 0)
+        self.set_operation(add, 2, "+")
 
     def set_sub(self):
-        self.set_operation(sub, 2, "-", 0)
+        self.set_operation(sub, 2, "-")
 
     def set_mod(self):
-        self.set_operation(mod, 2, "%", 0)
+        self.set_operation(mod, 2, "%")
 
     def set_nrt(self):
-        self.set_operation(nrt, 2, "√", 0)
+        self.set_operation(nrt, 2, "√")
 
     def set_nrt_two(self):
-        self.set_operation(nrt, 2, "√", 1)
+        self.set_operation(nrt, 2, "√")
+        self.label.setText(self.label.text() + "2")
 
     def swap_sign(self):
         parsed_input = self.label.text().split(" ")
@@ -493,22 +496,19 @@ class Ui_MainWindow(object):
 
     # TODO: combine single operand operation setters into a shared method.
     def set_fact(self):
-        self.set_operation(fact, 1, "!", 0)
+        self.set_operation(fact, 1, "!")
 
     def set_cos(self):
-        self.set_operation(cos, 1, "cos", 0)
+        self.set_operation(cos, 1, "cos")
 
     def set_sin(self):
-        self.set_operation(sin, 1, "sin", 0)
+        self.set_operation(sin, 1, "sin")
 
     def set_asin(self):
-        self.set_operation(asin, 1, "asin", 0)
+        self.set_operation(asin, 1, "asin")
 
     def set_acos(self):
-        self.set_operation(asin, 1, "acos", 0)
-
-    # TODO: combine print_number methods into a shared method.
-    #       Look for PyQt's self.sender() reference (__init__ setup will be necessary).
+        self.set_operation(asin, 1, "acos")
 
     def print_zero(self):
         parsed_input = self.label.text().split(" ")
@@ -516,61 +516,95 @@ class Ui_MainWindow(object):
 
         if parsed_input_length == 1:
             if '0' in parsed_input[0][0]:
-                self.label.setText(parsed_input[0])
-
                 if '.' in parsed_input[0]:
                     self.label.setText(parsed_input[0] + self.zero.text())
+                else:
+                    self.label.setText(parsed_input[0])
             else:
                 self.label.setText(parsed_input[0] + self.zero.text())
 
-        if parsed_input_length == 2:
+        elif parsed_input_length == 2:
             if '0' in parsed_input[1][0]:
-                self.label.setText(parsed_input[0] + " " + parsed_input[1])
-
                 if '.' in parsed_input[1]:
                     self.label.setText(parsed_input[0] + " " + parsed_input[1] + self.zero.text())
-
+                else:
+                    self.label.setText(parsed_input[0] + " " + parsed_input[1])
             else:
                 self.label.setText(parsed_input[0] + " " + parsed_input[1] + self.zero.text())
 
-        if parsed_input_length == 3:
+        elif parsed_input_length == 3:
             if '.' in parsed_input[2]:
                 (self.label.setText(parsed_input[0] + " " + parsed_input[1] +
                                     " " + parsed_input[2] + self.zero.text()))
-
             else:
-                (self.label.setText(parsed_input[0] + " " + parsed_input[1] +
-                 " " + self.zero.text()))
+                if not parsed_input[2]:
+                    (self.label.setText(parsed_input[0] + " " + parsed_input[1] +
+                     " " + self.zero.text()))
+                else:
+                    (self.label.setText(parsed_input[0] + " " + parsed_input[1] +
+                                        " " + parsed_input[2] + self.zero.text()))
+
+    def print_non_zero(self, number):
+        parsed_input = self.label.text().split(" ")
+        parsed_input_length = len(parsed_input)
+
+        if parsed_input_length == 1:
+            if '0' in parsed_input[0][0]:
+                if '.' in parsed_input[0]:
+                    self.label.setText(parsed_input[0] + number)
+                else:
+                    self.label.setText(number)
+            else:
+                self.label.setText(parsed_input[0] + number)
+
+        elif parsed_input_length == 2:
+            if '0' in parsed_input[1][0]:
+                if '.' in parsed_input[1]:
+                    self.label.setText(parsed_input[0] + " " + parsed_input[1] + number)
+                else:
+                    self.label.setText(parsed_input[0] + " " + number)
+            else:
+                self.label.setText(parsed_input[0] + " " + parsed_input[1] + number)
+
+        elif parsed_input_length == 3:
+            if not parsed_input[2]:
+                self.label.setText(parsed_input[0] + " " + parsed_input[1] + " " + number)
+            elif '0' in parsed_input[2][0]:
+                if '.' in parsed_input[2]:
+                    (self.label.setText(parsed_input[0] + " " + parsed_input[1] + " " +
+                     parsed_input[2] + number))
+                else:
+                    self.label.setText(parsed_input[0] + " " + parsed_input[1] + " " + number)
+            else:
+                (self.label.setText(parsed_input[0] + " " + parsed_input[1] + " " +
+                 parsed_input[2] + number))
 
     def print_one(self):
-        if '0' in self.label.text():
-            self.label.setText(self.one.text())
-        else:
-            self.label.setText(self.label.text() + self.one.text())
+        self.print_non_zero(self.one.text())
 
     def print_two(self):
-        self.label.setText(self.label.text() + self.two.text())
+        self.print_non_zero(self.two.text())
 
     def print_three(self):
-        self.label.setText(self.label.text() + self.three.text())
+        self.print_non_zero(self.three.text())
 
     def print_four(self):
-        self.label.setText(self.label.text() + self.four.text())
+        self.print_non_zero(self.four.text())
 
     def print_five(self):
-        self.label.setText(self.label.text() + self.five.text())
+        self.print_non_zero(self.five.text())
 
     def print_six(self):
-        self.label.setText(self.label.text() + self.six.text())
+        self.print_non_zero(self.six.text())
 
     def print_seven(self):
-        self.label.setText(self.label.text() + self.seven.text())
+        self.print_non_zero(self.seven.text())
 
     def print_eight(self):
-        self.label.setText(self.label.text() + self.eight.text())
+        self.print_non_zero(self.eight.text())
 
     def print_nine(self):
-        self.label.setText(self.label.text() + self.nine.text())
+        self.print_non_zero(self.nine.text())
 
     def set_clear(self):
             self.label.setText("0")
@@ -601,14 +635,16 @@ class Ui_MainWindow(object):
             if '.' in parsed_input[2]:
                 self.label.setText(parsed_input[0] + " " + parsed_input[1] + " " + parsed_input[2])
 
-    # TODO: here check which operand is being written. Based on that replace the operand value with PI value.
     def print_pi(self):
-        if 'π' in self.label_2.text():
-            self.label.setText("3.141592653589793")
+        parsed_input = self.label.text().split(" ")
+        parsed_input_length = len(parsed_input)
 
-        if 'π' not in self.label_2.text():
-                self.label.setText("3.141592653589793")
-                self.label_2.setText("π")
+        if parsed_input_length == 1:
+            self.label.setText("3.141592653589793")
+        elif parsed_input_length == 2:
+            self.label.setText(parsed_input[0] + " " + "3.141592653589793")
+        elif parsed_input_length == 3:
+            self.label.setText(parsed_input[0] + " " + parsed_input[1] + " " + "3.141592653589793")
 
 
 # TODO: Not sure if this is supposed to be here, really. Maybe move into something like a ui_main.py class?
