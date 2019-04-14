@@ -34,13 +34,14 @@ class UiMainWindow(QtWidgets.QMainWindow):
         "^": pow,
         "√": nrt
     }  # text inside button : corresponding math function pointer dictionary
+    result_set = False  # whether label_2 currently holds a correct result value
 
     def __init__(self):
         super().__init__()
 
         # main window setup
         self.setObjectName("MainWindow")
-        self.resize(503, 653)
+        self.setFixedSize(503, 653)
         self.setStyleSheet(
             "background-color: qlineargradient(spread:pad, x1:1, y1:0.113773, x2:1, y2:0.892,"
             "stop:0 rgba(126, 123, 194, 255), stop:1 rgba(219, 129, 137, 255));"
@@ -230,14 +231,14 @@ class UiMainWindow(QtWidgets.QMainWindow):
         # label setup
         font.setPointSize(18)
         self.label = QtWidgets.QLabel(self.frame_3)
-        self.label.setGeometry(QtCore.QRect(70, 40, 271, 51))
+        self.label.setGeometry(QtCore.QRect(15, 40, 381, 51))
         self.label.setFont(font)
         self.label.setStyleSheet("color: rgb(255, 255, 255);")
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName("label")
         self.label.setText("0")
         self.label_2 = QtWidgets.QLabel(self.frame_3)
-        self.label_2.setGeometry(QtCore.QRect(40, 110, 331, 71))
+        self.label_2.setGeometry(QtCore.QRect(15, 110, 381, 71))
         self.label_2.setFont(font)
         self.label_2.setStyleSheet("color: rgb(255, 255, 255);")
         self.label_2.setText("")
@@ -286,10 +287,6 @@ class UiMainWindow(QtWidgets.QMainWindow):
         # make ui visible after setup
         self.show()
 
-    # TODO: do not allow multiple operations in selected inside the label. When switching from a dual operand to a
-    #       single operand operation, use the currently written operand as the one for the single operation.
-    #       Also, check for a valid result value in label_2 and use that as the first operand. This enables operation
-    #       nesting, which is important.
     ##
     # @brief Sets the selected operation and its dependencies
     #
@@ -304,10 +301,32 @@ class UiMainWindow(QtWidgets.QMainWindow):
         self.operation_callback = callback
         self.operand_count = operand_count
 
-        if operand_count == 1:
-            self.label.setText(symbol + " " + self.label.text())
-        else:
-            self.label.setText(self.label.text() + " " + symbol + " ")
+        # Use result (if correct and exists) in the operation label
+        if self.result_set and "Error" not in self.label_2.text():
+            if operand_count == 1:
+                self.label.setText(symbol + " " + self.label_2.text())
+            else:
+                self.label.setText(self.label_2.text() + " " + symbol + " ")
+            return
+
+        parsed_input = self.label.text().split(" ")
+        parsed_input_length = len(parsed_input)
+
+        if parsed_input_length == 1:
+            if operand_count == 1:
+                self.label.setText(symbol + " " + self.label.text())
+            else:
+                self.label.setText(self.label.text() + " " + symbol + " ")
+        elif parsed_input_length == 2:
+            if operand_count == 1:
+                self.label.setText(symbol + " " + parsed_input[1])
+            else:
+                self.label.setText(parsed_input[1] + " " + symbol + " ")
+        elif parsed_input_length == 3:
+            if operand_count == 1:
+                self.label.setText(symbol + " " + parsed_input[2])
+            else:
+                self.label.setText(parsed_input[0] + " " + symbol + " " + parsed_input[2])
 
     ##
     # @brief Processes operands and, if the operation and operand count are valid, generates a result.
@@ -320,29 +339,54 @@ class UiMainWindow(QtWidgets.QMainWindow):
                 or parsed_input[self.operand_count] == "-":
             return
 
-        # Try to get the result. May end up catching math library exceptions (for things like division by zero).
+        # Try to get the result. Also checks for library exceptions and (if possible) corrects the input.
         result = float("nan")
         try:
             if self.operand_count == 1:
-                result = self.operation_callback(float(parsed_input[1]))
+                if self.operation_callback == fact:
+                    abs_int_n = abs(int(float(parsed_input[1])))
+                    self.label.setText(parsed_input[0] + " " + str(abs_int_n))
+                    result = self.operation_callback(abs_int_n)
 
-            elif self.operation_callback == (pow or nrt):
-                result = self.operation_callback(float(parsed_input[0]), int(parsed_input[2]))
+                elif self.operation_callback == asin or self.operation_callback == acos:
+                    x = float(parsed_input[1])
+                    if x < -1 or x > 1:
+                        result = "Error: Undefined outside [-1, 1]!"
+                    else:
+                        result = self.operation_callback(x)
+                else:
+                    result = self.operation_callback(float(parsed_input[1]))
 
-            elif self.operation_callback == div:
-                if parsed_input[2] == '0':
-                    result = "Error division by zero!"
+            elif self.operation_callback == pow:
+                abs_int_exp = abs(int(float(parsed_input[2])))
+                self.label.setText(parsed_input[0] + " " + parsed_input[1] + " " + str(abs_int_exp))
+                result = self.operation_callback(float(parsed_input[0]), abs_int_exp)
+
+            elif self.operation_callback == nrt:
+                float_x = float(parsed_input[2])
+                abs_int_n = abs(int(float(parsed_input[0])))
+                if float_x < 0 and abs_int_n != 1 and abs_int_n % 2 == 0:
+                    result = "Error: Undefined for real numbers!"
+                else:
+                    self.label.setText(str(abs_int_n) + " " + parsed_input[1] + " " + parsed_input[2])
+                    result = self.operation_callback(float_x, abs_int_n)
+
+            elif self.operation_callback == div or self.operation_callback == mod:
+                if float(parsed_input[2]) == 0.0:
+                    result = "Error: Division by zero!"
                 else:
                     result = self.operation_callback(float(parsed_input[0]), float(parsed_input[2]))
             else:
                 result = self.operation_callback(float(parsed_input[0]), float(parsed_input[2]))
-
-        # TODO: Handle all the math exceptions and write an error message inside label_2. Do not forget the fact that
-        #       the error message should be converted to a number (e.g. to zero) when nesting operations.
-        except ValueError:
+        except (ValueError, ZeroDivisionError):
             pass
         finally:
-            self.label_2.setText(str(result))
+            result_string = str(result)
+            self.label_2.setText(result_string)
+            if "Error" not in result_string:
+                self.result_set = True
+            else:
+                self.result_set = False
 
     def set_single_operand_operation(self):
         text = self.sender().text()
@@ -357,16 +401,19 @@ class UiMainWindow(QtWidgets.QMainWindow):
 
     def set_pow_two(self):
         self.set_pow()
-        self.label.setText(self.label.text() + "2")
+        parsed_input = self.label.text().split(" ")
+        self.label.setText(parsed_input[0] + " " + parsed_input[1] + " 2")
 
     def set_nrt(self):
         self.set_operation(self.operation_pointers["√"], 2, "√")
 
     def set_nrt_two(self):
-        number_holder = self.label.text()
-        self.label.setText("2")
         self.set_nrt()
-        self.label.setText(self.label.text() + number_holder)
+        parsed_input = self.label.text().split(" ")
+        if parsed_input[2]:
+            self.label.setText("2 " + parsed_input[1] + " " + parsed_input[2])
+        else:
+            self.label.setText("2 " + parsed_input[1] + " " + parsed_input[0])
 
     def swap_sign(self):
         parsed_input = self.label.text().split(" ")
@@ -438,6 +485,7 @@ class UiMainWindow(QtWidgets.QMainWindow):
     def clear_calc(self):
         self.label.setText("0")
         self.label_2.setText(" ")
+        self.result_set = False
 
 
 if __name__ == "__main__":
