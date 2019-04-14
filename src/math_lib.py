@@ -114,7 +114,7 @@ def pow(x, exp):
 # @exception ZeroDivisionError if n equals to 0.
 #
 def nrt(x, n):
-    if x < 0 and n != 1 and n % 2 == 0:
+    if x < 0 and n != 1 and (n % 2 == 0 or isinstance(n, float)):
         raise ValueError('This library doesn\'t support complex numbers.')
     try:
         return x ** (1 / n)
