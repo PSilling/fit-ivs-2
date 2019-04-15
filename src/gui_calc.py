@@ -2,24 +2,45 @@
 
 ##
 # @file gui_calc.py
-#
 # @brief GUI for fit-ivs-2 calculator.
-# Created by: PyQt5 UI code generator 5.11.3. Slightly refactored afterwards.
-#
 # @author Petr Šilling <xsilli01.stud.fit.vutbr.cz>
 # @author Nikolas Rada <xradan00.stud.fit.vutbr.cz>
-
-# Project: fit-ivs-2
-# Date created: 2019-03-16
-# Last modified: 2019-04-14
+#
+# Created by: PyQt5 UI code generator 5.11.3. Slightly refactored afterwards.
+# * Project: fit-ivs-2
+# * Date created: 2019-03-16
+# * Last modified: 2019-04-14
+#
 
 from src.math_lib import *
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
+##
+# @defgroup gui GUI
+# @brief GUI connected to the mathematical library.
+# @{
+#
+
+
+##
+# @brief Main GUI window connected to the mathematical library.
+#
 class UiMainWindow(QtWidgets.QMainWindow):
-    operation_callback = None  # currently selected operation pointer
-    operand_count = -1  # number of operands necessary for the current operation (1 for sin, 2 for add and so on)
+
+    ##
+    # Currently selected operation pointer.
+    #
+    operation_callback = None
+
+    ##
+    # Number of operands necessary for the current operation (1 for sin, 2 for add and so on).
+    #
+    operand_count = -1
+
+    ##
+    # Text inside button : corresponding math function pointer dictionary.
+    #
     operation_pointers = {
         "sin": sin,
         "cos": cos,
@@ -33,9 +54,19 @@ class UiMainWindow(QtWidgets.QMainWindow):
         "%": mod,
         "^": pow,
         "√": nrt
-    }  # text inside button : corresponding math function pointer dictionary
-    result_set = False  # whether label_2 currently holds a correct result value
+    }
 
+    ##
+    # Whether label_2 currently holds a correct result value.
+    #
+    result_set = False
+
+    ##
+    # Sets up the main UI window including all buttons (connecting them to actions as well) and labels,
+    # setting the UI visible after it's done.
+    #
+    # @brief Initial setup of the main UI window for the calculator.
+    #
     def __init__(self):
         super().__init__()
 
@@ -288,11 +319,11 @@ class UiMainWindow(QtWidgets.QMainWindow):
         self.show()
 
     ##
-    # @brief Sets the selected operation and its dependencies
+    # @brief Sets the selected operation and its dependencies.
+    # @param callback Function pointer to be set.
+    # @param operand_count Number of parameters necessary for the given callback.
+    # @param symbol Symbol(s) to print inside the label.
     #
-    # @param callback       Function pointer to be set
-    # @param operand_count  Number of parameters necessary for the given callback
-    # @param symbol         Symbol(s) to print inside the label
     def set_operation(self, callback, operand_count, symbol):
         if (operand_count != 1 and len(self.label.text()) == 0)\
                 or operand_count < 1 or operand_count > 2 or callback is None:
@@ -388,25 +419,55 @@ class UiMainWindow(QtWidgets.QMainWindow):
             else:
                 self.result_set = False
 
+    ##
+    # Sets operation with function pointer and symbol to print from self and operand count set to 1.
+    #
+    # @brief Sets operation requiring a single operand.
+    #
     def set_single_operand_operation(self):
         text = self.sender().text()
         self.set_operation(self.operation_pointers[text], 1, text)
 
+    ##
+    # Sets operation with function pointer and symbol to print from self and operand count set to 2.
+    #
+    # @brief Sets operation requiring two operands.
+    #
     def set_two_operand_operation(self):
         text = self.sender().text()
         self.set_operation(self.operation_pointers[text], 2, text)
 
+    ##
+    # Sets operation with function pointer, symbol to print and operand count set for power function.
+    #
+    # @brief Sets power function.
+    #
     def set_pow(self):
         self.set_operation(self.operation_pointers["^"], 2, "^")
 
+    ##
+    # Sets operation with function pointer, symbol to print and operand count set for power to 2 function.
+    #
+    # @brief Sets power to 2 function.
+    #
     def set_pow_two(self):
         self.set_pow()
         parsed_input = self.label.text().split(" ")
         self.label.setText(parsed_input[0] + " " + parsed_input[1] + " 2")
 
+    ##
+    # Sets operation with function pointer, symbol to print and operand count set for root function.
+    #
+    # @brief Sets root function.
+    #
     def set_nrt(self):
         self.set_operation(self.operation_pointers["√"], 2, "√")
 
+    ##
+    # Sets operation with function pointer, symbol to print and operand count set for square root function.
+    #
+    # @brief Sets square root function.
+    #
     def set_nrt_two(self):
         self.set_nrt()
         parsed_input = self.label.text().split(" ")
@@ -415,6 +476,9 @@ class UiMainWindow(QtWidgets.QMainWindow):
         else:
             self.label.setText("2 " + parsed_input[1] + " " + parsed_input[0])
 
+    ##
+    # @brief Swaps the sign of the currently written operand.
+    #
     def swap_sign(self):
         parsed_input = self.label.text().split(" ")
         parsed_input_length = len(parsed_input)
@@ -436,6 +500,9 @@ class UiMainWindow(QtWidgets.QMainWindow):
             else:
                 self.label.setText(parsed_input[0] + " " + parsed_input[1] + " " + parsed_input[2][1:])
 
+    ##
+    # @brief Prints number from self to current operand.
+    #
     def print_number(self):
         number_string = self.sender().text()
         parsed_input = self.label.text().split(" ")
@@ -457,6 +524,9 @@ class UiMainWindow(QtWidgets.QMainWindow):
             else:
                 self.label.setText(parsed_input[0] + " " + parsed_input[1] + " " + parsed_input[2] + number_string)
 
+    ##
+    # @brief Prints dot to current operand.
+    #
     def print_dot(self):
         parsed_input = self.label.text().split(" ")
         parsed_input_length = len(parsed_input)
@@ -471,6 +541,9 @@ class UiMainWindow(QtWidgets.QMainWindow):
             if '.' not in parsed_input[2]:
                 self.label.setText(parsed_input[0] + " " + parsed_input[1] + " " + parsed_input[2] + ".")
 
+    ##
+    # @brief Prints Pi to current operand.
+    #
     def print_pi(self):
         parsed_input = self.label.text().split(" ")
         parsed_input_length = len(parsed_input)
@@ -482,10 +555,18 @@ class UiMainWindow(QtWidgets.QMainWindow):
         elif parsed_input_length == 3:
             self.label.setText(parsed_input[0] + " " + parsed_input[1] + " " + "3.141592653589793")
 
+    ##
+    # @brief Resets operands to default values.
+    #
     def clear_calc(self):
         self.label.setText("0")
         self.label_2.setText(" ")
         self.result_set = False
+
+
+##
+# @}
+#
 
 
 if __name__ == "__main__":

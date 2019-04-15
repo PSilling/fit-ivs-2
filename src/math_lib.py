@@ -6,9 +6,9 @@
 # @brief Mathematical library for fit-ivs-2 calculator.
 # @author František Maštera <xmaste02.stud.fit.vutbr.cz>
 #
-# Project: fit-ivs-2
-# Date created: 2019-03-05
-# Last modified: 2019-03-16
+# * Project: fit-ivs-2
+# * Date created: 2019-03-05
+# * Last modified: 2019-03-16
 #
 
 PI = 3.141_592_653_589_793
@@ -17,6 +17,31 @@ PI = 3.141_592_653_589_793
 # @brief Decimal accuracy of methods using Taylor series.
 #
 acc = 1e-10
+
+
+##
+# Subtracts/adds 2*PI from/to the x value until it's within (-2*PI, 2*PI) range. Due to limited
+# PI accuracy, this means the x gets less accurate the higher/lower it is in the beginning.
+# This is necessary because sin(x) and cos(x) with x values set too high or too low
+# cause OverflowError.
+#
+# @brief Reduce number to (-2*PI, 2*PI) range by subtracting/adding 2*PI.
+# @param x Number to be reduced.
+# @return x within (-2*PI, 2*PI) range with the same sine/cosine value as original x.
+#
+def reduce_rad(x):
+    while x > 2*PI:
+        x -= 2*PI
+    while x < -2*PI:
+        x += 2*PI
+    return x
+
+
+##
+# @defgroup functions Math operations
+# @brief Mathematical operations included in the mathematical library.
+# @{
+#
 
 
 ##
@@ -110,7 +135,7 @@ def pow(x, exp):
 # @param x Number of which root is calculated.
 # @param n Exponent.
 # @return Nth root of given number.
-# @exception ValueError if n is lower than 0 and n isn't 1.
+# @exception ValueError if n is lower than 0, n isn't 1 and it's even or float.
 # @exception ZeroDivisionError if n equals to 0.
 #
 def nrt(x, n):
@@ -123,29 +148,13 @@ def nrt(x, n):
 
 
 ##
-# @brief Reduce number to (-2*PI, 2*PI) range by subtracting/adding 2*PI.
-# @param x Number to be reduced.
-# @return x within (-2*PI, 2*PI) range with the same sine/cosine value as original x.
-# Subtracts/adds 2*PI from/to the x value until it's within (-2*PI, 2*PI) range. Due to limited
-# PI accuracy, this means the x gets less accurate the higher/lower it is in the beggining.
-# This is neccessary because sin(x) and cos(x) with x values set too high or too low
-# cause OverflowError.
+# Values outside (-2*PI, 2*PI) range will be increased/decreased by 2*PI until they will
+# get to that range. This shouldn't affect the result unless the x is ludicrously small/large.
 #
-def reduce_rad(x):
-    while x > 2*PI:
-        x -= 2*PI
-    while x < -2*PI:
-        x += 2*PI
-    return x
-
-
-##
 # @brief Sine of a number using Taylor series.
 # @param n Number of which sine is calculated in radians.
 # @return Sine of given number.
 # @see https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions
-# Values outisde (-2*PI, 2*PI) range will be increased/decreased by 2*PI until they will
-# get to that range. This shouldn't affect the result unless the x is ludicrously small/large.
 #
 def sin(x):
     x = reduce_rad(x)
@@ -178,13 +187,14 @@ def sin(x):
 
 
 ##
+# Values close to minimal/maximal allowed values (from +-0.999) will return set value
+# of PI/2. Calculation of precise result for these values takes long time to process.
+#
 # @brief Arcsine of a number using Taylor series.
 # @param n Number of which arcsine is calculated.
 # @return Arcsine of given number in radians.
-# @exception ValueError if x is outide the (-1, 1) range.
+# @exception ValueError if x is outside the (-1, 1) range.
 # @see https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions
-# Values close to minimal/maximal allowed values (from +-0.999) will return set value
-# of PI/2. Calculation of precise result for these values takes long time to process.
 #
 def asin(x):
     if x < -1 or x > 1:
@@ -224,12 +234,13 @@ def asin(x):
 
 
 ##
+# Values outside (-2*PI, 2*PI) range will be increased/decreased by 2*PI until they will
+# get to that range. This shouldn't affect the result unless the x is ludicrously small/large.
+#
 # @brief Cosine of a number using Taylor series.
 # @param n Number of which sine is calculated in radians.
 # @return Cosine of given number.
 # @see https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions
-# Values outisde (-2*PI, 2*PI) range will be increased/decreased by 2*PI until they will
-# get to that range. This shouldn't affect the result unless the x is ludicrously small/large.
 #
 def cos(x):
     x = reduce_rad(x)
@@ -262,14 +273,18 @@ def cos(x):
 
 
 ##
+# Values close to minimal/maximal allowed values (from +-0.999) will return set values
+# of 0 and PI. Calculation of precise result for these values takes long time to process.
+#
 # @brief Arccosine of a number using Taylor series.
 # @param n Number of which arccosine is calculated.
 # @return Arccosine of given number in radians.
-# @exception ValueError if x is outide the (-1, 1) range.
+# @exception ValueError if x is outside the (-1, 1) range.
 # @see https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions
-# Values close to minimal/maximal allowed values (from +-0.999) will return set values
-# of 0 and PI. Calculation of precise result for these values takes long time to process.
 #
 def acos(x):
     return PI/2 - asin(x)
 
+##
+# @}
+#
