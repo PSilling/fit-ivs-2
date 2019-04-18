@@ -17,11 +17,10 @@ clean:
 	rm -rf __pycache__
 
 pack: doc clean
-	cd .. && mkdir tmp && cd tmp && mkdir src && mkdir install && mkdir repo
+	cd .. && mkdir tmp && cd tmp && mkdir installer && mkdir repo && mkdir doc
 	cp -r ../doc ../tmp/doc
-	cp -r . ../tmp/src
-	#cp -r ../installer ../tmp/install
 	cd .. && rsync -Rr ./* ./tmp/repo
+	cd .. && rsync -Rr ./. ./tmp/repo
 	rm -rf ../tmp/repo/tmp
 	cd ../tmp && zip -qr ../xsilli01_xmaste02_xschme00_xradan00.zip ./*
 	rm -rf ../tmp
