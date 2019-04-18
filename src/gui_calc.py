@@ -12,7 +12,7 @@
 # * Last modified: 2019-04-14
 #
 
-from src.math_lib import *
+from math_lib import *
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
