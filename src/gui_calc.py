@@ -333,7 +333,7 @@ class UiMainWindow(QtWidgets.QMainWindow):
         self.operand_count = operand_count
 
         # Use result (if correct and exists) in the operation label
-        if self.result_set and "Error" not in self.label_2.text():
+        if self.result_set and "Error" not in self.label_2.text() and "nan" not in self.label_2.text():
             if operand_count == 1:
                 self.label.setText(symbol + " " + self.label_2.text())
             else:
@@ -402,11 +402,24 @@ class UiMainWindow(QtWidgets.QMainWindow):
                     self.label.setText(str(abs_int_n) + " " + parsed_input[1] + " " + parsed_input[2])
                     result = self.operation_callback(float_x, abs_int_n)
 
-            elif self.operation_callback == div or self.operation_callback == mod:
+            elif self.operation_callback == div:
                 if float(parsed_input[2]) == 0.0:
                     result = "Error: Division by zero!"
                 else:
                     result = self.operation_callback(float(parsed_input[0]), float(parsed_input[2]))
+
+            elif self.operation_callback == mod:
+                rounded_dividend = int(round(float(parsed_input[0]), 0))
+                rounded_divisor = int(round(float(parsed_input[2]), 0))
+                self.label.setText(str(rounded_dividend) + " " + parsed_input[1] + " " + str(rounded_divisor))
+                if rounded_divisor == 0:
+                    result = "Error: Division by zero!"
+                else:
+                    result = self.operation_callback(rounded_dividend, rounded_divisor)
+
+            elif self.operation_callback is None:
+                result = float(parsed_input[0])
+
             else:
                 result = self.operation_callback(float(parsed_input[0]), float(parsed_input[2]))
         except (ValueError, ZeroDivisionError):
@@ -414,7 +427,7 @@ class UiMainWindow(QtWidgets.QMainWindow):
         finally:
             result_string = str(result)
             self.label_2.setText(result_string)
-            if "Error" not in result_string:
+            if "Error" not in result_string and result != float("nan"):
                 self.result_set = True
             else:
                 self.result_set = False

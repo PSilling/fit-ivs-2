@@ -94,10 +94,13 @@ def div(x, y):
 # @param y Divisor.
 # @return The remainder after division of 1st and 2nd number.
 # @exception ZeroDivisionError if y (divisor) equals to 0.
+# @exception ValueError if x or y aren't whole numbers.
 #
 def mod(x, y):
+    if not isinstance(x, int) or not isinstance(y, int):
+        raise ValueError('Modulo is defined for whole numbers only.');
     try:
-        return x % y
+        return x % round(y, 0)
     except ZeroDivisionError as ex:
         raise ex
 
@@ -135,14 +138,17 @@ def pow(x, exp):
 # @param x Number of which root is calculated.
 # @param n Exponent.
 # @return Nth root of given number.
-# @exception ValueError if n is lower than 0, n isn't 1 and it's even or float.
+# @exception ValueError if x is lower than 0 and n is even or float.
 # @exception ZeroDivisionError if n equals to 0.
 #
 def nrt(x, n):
-    if x < 0 and n != 1 and (n % 2 == 0 or isinstance(n, float)):
-        raise ValueError('This library doesn\'t support complex numbers.')
     try:
-        return x ** (1 / n)
+        if x > 0:
+            return x ** (1 / n)
+        if x < 0:
+            if n % 2 == 0 or isinstance(n, float):
+                raise ValueError('This library doesn\'t support complex numbers.')
+            return -((-x) ** (1 / float(n)))
     except ZeroDivisionError:
         raise ValueError('Can\'t get 0th root of any number.')
 
