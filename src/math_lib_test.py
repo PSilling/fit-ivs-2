@@ -234,21 +234,21 @@ class TestMod(TestCase):
         self.assertEqual(-990, mod(-98_322_554, -6_751))
 
     def test_mod_with_one_float(self):
-        self.assertAlmostEqual(0, mod(0, 1.99))
-        self.assertAlmostEqual(2.2, mod(22, 19.8))
-        self.assertAlmostEqual(32.4, mod(-231.6, 33))
-        self.assertAlmostEqual(56.3, mod(973.3, 131))
-        self.assertAlmostEqual(-455, mod(-55_419, -785.2))
-        self.assertAlmostEqual(516.7, mod(682_799.7, 3_361))
+        self.assertRaises(ValueError, mod, 0, 1.99)
+        self.assertRaises(ValueError, mod, 22, 19.8)
+        self.assertRaises(ValueError, mod, -231.6, 33)
+        self.assertRaises(ValueError, mod, 973.3, 131)
+        self.assertRaises(ValueError, mod, -55_419, -785.2)
+        self.assertRaises(ValueError, mod, 682_799.7, 3_361)
 
     def test_mod_with_two_floats(self):
-        self.assertAlmostEqual(0, mod(4.66, 2.33))
-        self.assertAlmostEqual(-11, mod(-48.5, -12.5))
-        self.assertAlmostEqual(-5, mod(56.6, -7.7))
-        self.assertAlmostEqual(-56.1, mod(-434.4, -126.1))
-        self.assertAlmostEqual(108.2, mod(-5_598.9, 815.3))
-        self.assertAlmostEqual(379.7, mod(97_117.2, 887.5))
-        self.assertAlmostEqual(-4_619.4, mod(53_712_428.6, -7_911.2))
+        self.assertRaises(ValueError, mod, 4.66, 2.33)
+        self.assertRaises(ValueError, mod, -48.5, -12.5)
+        self.assertRaises(ValueError, mod, 56.6, -7.7)
+        self.assertRaises(ValueError, mod, -434.4, -126.1)
+        self.assertRaises(ValueError, mod, -5_598.9, 815.3)
+        self.assertRaises(ValueError, mod, 97_117.2, 887.5)
+        self.assertRaises(ValueError, mod, 53_712_428.6, -7_911.2)
 
 
 class TestFact(TestCase):
