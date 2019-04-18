@@ -8,7 +8,7 @@
 # Last modified: 2019-03-10
 
 from unittest import TestCase
-from .math_lib import *
+from math_lib import *
 
 # This file contains math_lib.py function tests.
 # Test names are based on the tested criteria and also correspond to
