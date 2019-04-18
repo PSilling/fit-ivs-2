@@ -394,8 +394,10 @@ class UiMainWindow(QtWidgets.QMainWindow):
                 result = self.operation_callback(float(parsed_input[0]), abs_int_exp)
 
             elif self.operation_callback == nrt:
-                float_x = float(parsed_input[2])
                 abs_int_n = abs(int(float(parsed_input[0])))
+                if abs_int_n == 0 or parsed_input[2] == ".":
+                    result = "Error: Undefined for exponent = 0!"
+                float_x = float(parsed_input[2])
                 if float_x < 0 and abs_int_n != 1 and abs_int_n % 2 == 0:
                     result = "Error: Undefined for real numbers!"
                 else:
@@ -409,13 +411,13 @@ class UiMainWindow(QtWidgets.QMainWindow):
                     result = self.operation_callback(float(parsed_input[0]), float(parsed_input[2]))
 
             elif self.operation_callback == mod:
-                rounded_dividend = int(round(float(parsed_input[0]), 0))
-                rounded_divisor = int(round(float(parsed_input[2]), 0))
-                self.label.setText(str(rounded_dividend) + " " + parsed_input[1] + " " + str(rounded_divisor))
-                if rounded_divisor == 0:
+                abs_dividend = abs(int(float(parsed_input[0])))
+                abs_divisor = abs(int(float(parsed_input[2])))
+                self.label.setText(str(abs_dividend) + " " + parsed_input[1] + " " + str(abs_divisor))
+                if abs_divisor == 0:
                     result = "Error: Division by zero!"
                 else:
-                    result = self.operation_callback(rounded_dividend, rounded_divisor)
+                    result = self.operation_callback(abs_dividend, abs_divisor)
 
             elif self.operation_callback is None:
                 result = float(parsed_input[0])

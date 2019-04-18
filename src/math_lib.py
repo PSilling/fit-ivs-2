@@ -97,12 +97,12 @@ def div(x, y):
 # @exception ValueError if x or y aren't whole numbers.
 #
 def mod(x, y):
-    if not isinstance(x, int) or not isinstance(y, int):
+    if round(y, 0) == 0:
+        raise ZeroDivisionError
+    elif not isinstance(x, int) or not isinstance(y, int):
         raise ValueError('Modulo is defined for whole numbers only.');
-    try:
-        return x % round(y, 0)
-    except ZeroDivisionError as ex:
-        raise ex
+    else:
+        return x % y
 
 
 ##
@@ -143,7 +143,7 @@ def pow(x, exp):
 #
 def nrt(x, n):
     try:
-        if x > 0:
+        if x >= 0:
             return x ** (1 / n)
         if x < 0:
             if n % 2 == 0 or isinstance(n, float):
