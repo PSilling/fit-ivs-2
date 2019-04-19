@@ -12,9 +12,6 @@
 # * Last modified: 2019-04-14
 #
 
-import sys
-sys.path.insert(0, '../src')
-import unittest
 from math_lib import *
 from PyQt5 import QtCore, QtGui, QtWidgets
 

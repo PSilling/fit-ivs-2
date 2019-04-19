@@ -5,4 +5,4 @@ cache: pip3
 install:
   - pip3 install -r src/requirements.txt
 script:
-  - python3 -m unittest src/math_lib_test.py
+  - cd src && python3 -m unittest math_lib_test
