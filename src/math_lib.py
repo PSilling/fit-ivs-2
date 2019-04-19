@@ -11,6 +11,10 @@
 # * Last modified: 2019-03-16
 #
 
+##
+# @brief Pi (3.14...) constant.
+# @see https://en.wikipedia.org/wiki/Pi
+#
 PI = 3.141_592_653_589_793
 
 ##
@@ -158,7 +162,7 @@ def nrt(x, n):
 # get to that range. This shouldn't affect the result unless the x is ludicrously small/large.
 #
 # @brief Sine of a number using Taylor series.
-# @param n Number of which sine is calculated in radians.
+# @param x Number of which sine is calculated in radians.
 # @return Sine of given number.
 # @see https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions
 #
@@ -197,7 +201,7 @@ def sin(x):
 # of PI/2. Calculation of precise result for these values takes long time to process.
 #
 # @brief Arcsine of a number using Taylor series.
-# @param n Number of which arcsine is calculated.
+# @param x Number of which arcsine is calculated.
 # @return Arcsine of given number in radians.
 # @exception ValueError if x is outside the (-1, 1) range.
 # @see https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions
@@ -244,7 +248,7 @@ def asin(x):
 # get to that range. This shouldn't affect the result unless the x is ludicrously small/large.
 #
 # @brief Cosine of a number using Taylor series.
-# @param n Number of which sine is calculated in radians.
+# @param x Number of which sine is calculated in radians.
 # @return Cosine of given number.
 # @see https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions
 #
@@ -283,7 +287,7 @@ def cos(x):
 # of 0 and PI. Calculation of precise result for these values takes long time to process.
 #
 # @brief Arccosine of a number using Taylor series.
-# @param n Number of which arccosine is calculated.
+# @param x Number of which arccosine is calculated.
 # @return Arccosine of given number in radians.
 # @exception ValueError if x is outside the (-1, 1) range.
 # @see https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions
