@@ -381,6 +381,38 @@ class UiMainWindow(QtWidgets.QMainWindow):
         self.show()
 
     ##
+    # @brief Captures number and basic math operation keys and calls the corresponding events.
+    # @param event Keyboard event that has been captured.
+    #
+    def keyPressEvent(self, event):
+        key = event.key()
+
+        if key == QtCore.Qt.Key_Shift or key == QtCore.Qt.Key_Control:
+            return
+
+        if 48 <= key <= 57:
+            self.pressed_key = chr(key)
+            self.print_number()
+        elif key == 46 or key == 44:
+            self.print_dot()
+        elif key == 42:
+            self.pressed_key = "×"
+            self.set_two_operand_operation()
+        elif key == 43 or key == 37:
+            self.pressed_key = chr(key)
+            self.set_two_operand_operation()
+        elif key == 45:
+            self.pressed_key = "−"
+            self.set_two_operand_operation()
+        elif key == 47:
+            self.pressed_key = "÷"
+            self.set_two_operand_operation()
+        elif key == 67 or key == 99:
+            self.clear_calc()
+        elif key == QtCore.Qt.Key_Enter or key == QtCore.Qt.Key_Return:
+            self.calculate_result()
+
+    ##
     # @brief Sets the selected operation and its dependencies.
     # @param callback Function pointer to be set.
     # @param operand_count Number of parameters necessary for the given callback.
