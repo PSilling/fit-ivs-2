@@ -9,7 +9,7 @@
 # Created by: PyQt5 UI code generator 5.11.3. Slightly refactored afterwards.
 # * Project: fit-ivs-2
 # * Date created: 2019-03-16
-# * Last modified: 2019-04-14
+# * Last modified: 2019-04-21
 #
 
 from math_lib import *
@@ -77,7 +77,9 @@ class UiMainWindow(QtWidgets.QMainWindow):
 
         # main window setup
         self.setObjectName("MainWindow")
-        self.setFixedSize(503, 653)
+        self.setFixedSize(500, 650)
+        self.setWindowIcon(QtGui.QIcon("../ivs-icon.png"))
+        self.setWindowTitle("IVS Chicken Calc")
         self.setStyleSheet(
             "background-color: qlineargradient(spread:pad, x1:1, y1:0.113773, x2:1, y2:0.892,"
             "stop:0 rgba(126, 123, 194, 255), stop:1 rgba(219, 129, 137, 255));"
@@ -409,7 +411,7 @@ class UiMainWindow(QtWidgets.QMainWindow):
             self.set_two_operand_operation()
         elif key == 67 or key == 99:
             self.clear_calc()
-        elif key == QtCore.Qt.Key_Enter or key == QtCore.Qt.Key_Return:
+        elif key == QtCore.Qt.Key_Enter or key == QtCore.Qt.Key_Return or key == 61:
             self.calculate_result()
 
     ##
@@ -548,7 +550,6 @@ class UiMainWindow(QtWidgets.QMainWindow):
             text = self.sender().text()
         else:
             self.pressed_key = None
-        print(text)
         self.set_operation(self.operation_pointers[text], 2, text)
 
     ##
@@ -668,11 +669,11 @@ class UiMainWindow(QtWidgets.QMainWindow):
         parsed_input_length = len(parsed_input)
 
         if parsed_input_length == 1:
-            self.label.setText("3.141592653589793")
+            self.label.setText(str(PI))
         elif parsed_input_length == 2:
-            self.label.setText(parsed_input[0] + " " + "3.141592653589793")
+            self.label.setText(parsed_input[0] + " " + str(PI))
         elif parsed_input_length == 3:
-            self.label.setText(parsed_input[0] + " " + parsed_input[1] + " " + "3.141592653589793")
+            self.label.setText(parsed_input[0] + " " + parsed_input[1] + " " + str(PI))
 
     ##
     # @brief Resets operands to default values.
@@ -681,6 +682,7 @@ class UiMainWindow(QtWidgets.QMainWindow):
         self.label.setText("0")
         self.label_2.setText(" ")
         self.result_set = False
+        self.pressed_key = None
 
 
 ##
