@@ -30,7 +30,7 @@ else
     fi
 
     if which pyinstaller >/dev/null; then
-        echo "You are about to install ivs-chicken-calc [~50MB]. Do you wish to install it?(y/n)"
+        echo "You are about to install ivs-chicken-calc [~100MB]. Do you wish to install it?(y/n)"
         read answer
         if echo "$answer" | grep -iq "^y" ;then
             pyinstaller -F ../src/gui_calc.py
@@ -62,6 +62,9 @@ else
     sudo mv ./dist/gui_calc /usr/share/applications
     sudo mkdir /usr/share/ivs-chicken-calc
     sudo cp ../ivs-icon.png /usr/share/ivs-chicken-calc/
+    chmod u+x "uninstall.sh"
+    sudo mv ./uninstall.sh /usr/share/applications/
+    sudo cp /usr/share/applications/uninstall.sh ./
     if [ ! -e "ivs-chicken-calc.desktop" ]; then
         echo "[Desktop Entry]" >> "ivs-chicken-calc.desktop"
         echo "Version=1.0" >> "ivs-chicken-calc.desktop"
@@ -76,6 +79,24 @@ else
     chmod u+x "ivs-chicken-calc.desktop"
     sudo mv ./ivs-chicken-calc.desktop /usr/share/applications
 
+if [ ! -e "remove-chicken-calc.desktop" ]; then
+        echo "[Desktop Entry]" >> "remove-chicken-calc.desktop"
+        echo "Version=1.0" >> "remove-chicken-calc.desktop"
+        echo "Type=Application" >> "remove-chicken-calc.desktop"
+        echo "Terminal=true" >> "remove-chicken-calc.desktop"
+        echo "Exec=/usr/share/applications/uninstall.sh" >> "remove-chicken-calc.desktop"
+        echo "Name=remove-chicken-calc" >> "remove-chicken-calc.desktop"
+        echo "Comment=Uninstaller for ivs-chicken-calc." >> "remove-chicken-calc.desktop"
+        echo "Icon=/usr/share/ivs-chicken-calc/ivs-icon.png" >> "remove-chicken-calc.desktop"
+        echo "Categories=Utility" >> "remove-chicken-calc.desktop"
+    fi 
+    chmod u+x "remove-chicken-calc.desktop"
+    sudo mv ./remove-chicken-calc.desktop /usr/share/applications
+
+sudo rm ./gui_calc.spec
+        sudo rm -rf dist
+        sudo rm -rf build
+        sudo rm -rf ../src/__pycache__
+
     echo "Installation was successful!"
 fi
-   
