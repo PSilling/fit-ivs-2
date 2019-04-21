@@ -1,5 +1,5 @@
 #!/bin/bash
-  
+ 
 if [ -f "/usr/share/ivs-chicken-calc/ivs-icon.png" ]; then
    echo "This file is already installed. You can uninstall it via uninstaller"
 else
@@ -16,8 +16,21 @@ else
         fi
     fi
 
+    if which pyqt5 >/dev/null; then
+        echo ""
+    else
+        echo "In order to install calculator you need to install pyqt5 first. Do you wish to install it?(y/n)"
+        read answer
+        if echo "$answer" | grep -iq "^y" ;then
+            sudo -H pip3 install pyqt5 2>/dev/null
+        else
+            echo "Installation was not successful!"
+            exit
+        fi
+    fi
+
     if which pyinstaller >/dev/null; then
-        echo "You are about to install ivs-chicken-calc [~100MB]. Do you wish to install it?(y/n)"
+        echo "You are about to install ivs-chicken-calc [~50MB]. Do you wish to install it?(y/n)"
         read answer
         if echo "$answer" | grep -iq "^y" ;then
             pyinstaller -F ../src/gui_calc.py
@@ -29,14 +42,23 @@ else
         echo "In orderd to install ivs-chicken-calc you need to install PyInstaller. Do you wish to install it?(y/n)"
         read answer
         if echo "$answer" | grep -iq "^y" ;then
-	        sudo -H pip3 install pyinstaller 2>/dev/null
+            sudo -H pip3 install pyinstaller 2>/dev/null
+
+            echo "You are about to install ivs-chicken-calc [~100MB]. Do you wish to install it?(y/n)"
+            read answer
+            if echo "$answer" | grep -iq "^y" ;then
+                pyinstaller -F ../src/gui_calc.py
+            else
+                echo "Installation was not successful!"
+                exit
+            fi
         else
             echo "Installation was not successful!"
             exit
         fi
     fi
     echo "You need to enter your password to complete installation."
-    
+   
     sudo mv ./dist/gui_calc /usr/share/applications
     sudo mkdir /usr/share/ivs-chicken-calc
     sudo cp ../ivs-icon.png /usr/share/ivs-chicken-calc/
@@ -56,4 +78,4 @@ else
 
     echo "Installation was successful!"
 fi
-    
+   
