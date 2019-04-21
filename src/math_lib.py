@@ -55,7 +55,7 @@ def reduce_rad(x):
 # @return Sum of 1st and 2nd number.
 #
 def add(x, y):
-    return x + y
+    return round(x + y, 10)
 
 
 ##
@@ -65,7 +65,7 @@ def add(x, y):
 # @return Difference of 1st and 2nd number.
 #
 def sub(x, y):
-    return x - y
+    return round(x - y, 10)
 
 
 ##
@@ -75,7 +75,7 @@ def sub(x, y):
 # @return Product of 1st and 2nd number.
 #
 def mul(x, y):
-    return x * y
+    return round(x * y, 10)
 
 
 ##
@@ -87,7 +87,7 @@ def mul(x, y):
 #
 def div(x, y):
     try:
-        return x / y
+        return round(x / y, 10)
     except ZeroDivisionError as ex:
         raise ex
 
@@ -106,7 +106,7 @@ def mod(x, y):
     elif not isinstance(x, int) or not isinstance(y, int):
         raise ValueError('Modulo is defined for whole numbers only.');
     else:
-        return x % y
+        return round(x % y, 10)
 
 
 ##
@@ -121,7 +121,7 @@ def fact(n):
     factorial = 1
     for i in range(1, n+1):
         factorial *= i
-    return factorial
+    return round(factorial, 10)
 
 
 ##
@@ -134,7 +134,7 @@ def fact(n):
 def pow(x, exp):
     if exp <= 0 or not isinstance(exp, int):
         raise ValueError('This function supports natural exponent only.')
-    return x ** exp
+    return round(x ** exp, 10)
 
 
 ##
@@ -148,11 +148,11 @@ def pow(x, exp):
 def nrt(x, n):
     try:
         if x >= 0:
-            return x ** (1 / n)
+            return round(x ** (1 / n), 10)
         if x < 0:
             if n % 2 == 0 or isinstance(n, float):
                 raise ValueError('This library doesn\'t support complex numbers.')
-            return -((-x) ** (1 / float(n)))
+            return round(-((-x) ** (1 / float(n))), 10)
     except ZeroDivisionError:
         raise ValueError('Can\'t get 0th root of any number.')
 
