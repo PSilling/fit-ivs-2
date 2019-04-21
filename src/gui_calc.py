@@ -492,10 +492,10 @@ class UiMainWindow(QtWidgets.QMainWindow):
             elif self.operation_callback == nrt:
                 abs_int_n = abs(int(float(parsed_input[0])))
                 if abs_int_n == 0 or parsed_input[2] == ".":
-                    result = "Error: Undefined for exponent = 0!"
+                    result = "Error: Undefined for zero!"
                 float_x = float(parsed_input[2])
                 if float_x < 0 and abs_int_n != 1 and abs_int_n % 2 == 0:
-                    result = "Error: Undefined for real numbers!"
+                    result = "Error: Undefined for real!"
                 else:
                     self.label.setText(str(abs_int_n) + " " + parsed_input[1] + " " + parsed_input[2])
                     result = self.operation_callback(float_x, abs_int_n)

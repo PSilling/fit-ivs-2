@@ -1,4 +1,4 @@
-xlogin01 100 (základ GUI a základní mat. operace)
-xlogin02 100 (pokročilé mat. operace)
-xlogin03 90 (profiling, instalátor)
-xlogin04 110 (testy, dokumentace)
+xsilli01 100 (inicializace, plánování, testy matematické knihovny, dokončení GUI)
+xmaste02 100 (implementace matematické knihovny, programová dokumentace, debugging)
+xschme00 100 (mockup, instalátor, uživatelská dokumentace, profiling a odchylka)
+xradan00 100 (grafické rozhraní, základní funcionalita GUI, Makefile, prezentace)

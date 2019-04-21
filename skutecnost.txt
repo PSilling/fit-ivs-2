@@ -1,1 +1,18 @@
-tento soubor bude obsahovat rozdil mezi planem projektu a skutecnosti
+# encoding: utf-8
+
+--------------------------------------------------------------------------------
+
+Rozdíly mezi vývojem a plánem vývoje
+  - Primárně z důvodu prvnotního setkání se s vyššími programovacími jazyky, byl hlavně vývoj grafikého rozhraní velmi
+    náročný a pomalý. Proto zde došlo ke zhruba dvoutýdennímu zpoždění dodání výsledku, na kterém se nakonec stejně
+    museli podílet ostatní členové týmu, než bylo původně plánováno. Nedošlo zde však v žádnému viditelnému odmítání
+    plnění zadaného úkolu, pouze byla vyžadována pomoc. Obecně se dá rovněž říci, že drobné úpravy byly pro zjednodušení
+    komunikace často dodělávány mimo naplánované rozdělení úkolů, což však ve výsledku nebyl problém, protože všichni
+    členové týmu pozorně sledovali změny v GitHub repozitáři, popřípadě byli upozorněni jiným způsobem.
+  - Opoždění dodání se týkalo rovněž dalších bodů plánu, v drtivé většině však šlo o posun způsobený odložením dodání
+    funčního grafického rozhraní. Minimálně před tvorbou grafického rozhraní byly termíny bezproblémově dodržovány.
+  - Vzhledem k rozsáhlému zadání struktury repozitáře apod. bylo rovněž složité správnou strukturu dodržovat. Tento
+    fakt často vedl k dodatečnému přejmenovávání souborů či k drobným dodatečným úpravám.
+  - Týmová komunikace byla ve výsledku prakticky bezproblémová, tudíž nebylo potřeba tolik komunikačních kanálů.
+
+--------------------------------------------------------------------------------
