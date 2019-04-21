@@ -1,4 +1,4 @@
-.PHONY: all run test doc clean cleanall pack wispack install uninstall
+.PHONY: all setup run test doc clean cleanall pack wispack install uninstall
 
 TEST_SRC_FILES := $(wildcard *_test.py)
 SRC_FILES := $(filter-out $(TEST_SRC_FILES), $(wildcard *.py))
@@ -10,7 +10,15 @@ vpath %.pdf ..
 vpath %.sh ../installer
 vpath %.txt ..
 
-all: run
+# target all does not compile (Python), but installs all dependencies necessary for a later installation
+# note that Python (v2 and v3) should both be pre-installed on later versions of Ubuntu
+all: setup
+setup: $(SRC_FILES)
+	sudo apt-get -y update
+	sudo apt-get install python3-pip
+	sudo -H pip3 install pyqt5
+	sudo -H pip3 install pyinstaller
+
 run: $(SRC_FILES)
 	python3 -m gui_calc
 
