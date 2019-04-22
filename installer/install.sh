@@ -64,7 +64,7 @@ else
     sudo cp ../ivs-icon.png /usr/share/ivs-chicken-calc/
     chmod u+x "uninstall.sh"
     sudo mv ./uninstall.sh /usr/share/applications/
-    sudo cp /usr/share/applications/uninstall.sh ./
+    cp /usr/share/applications/uninstall.sh ./
     if [ ! -e "ivs-chicken-calc.desktop" ]; then
         echo "[Desktop Entry]" >> "ivs-chicken-calc.desktop"
         echo "Version=1.0" >> "ivs-chicken-calc.desktop"
