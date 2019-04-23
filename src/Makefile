@@ -34,25 +34,27 @@ doc: Doxyfile $(SRC_FILES) $(TEST_SRC_FILES)
 	mv doc ../doc
 
 clean:
-	rm -rf __pycache__ ../../tmp
+	rm -rf __pycache__ ../doc ../../$(TEAM_PACK_NAME) doxygen_warn_logfile.log
 
 cleanall:
-	rm -rf __pycache__ ../doc ../../tmp ../../$(TEAM_PACK_NAME).zip ../../$(TEAM_PACK_NAME)_wis.zip
+	rm -rf __pycache__ ../doc ../../$(TEAM_PACK_NAME) ../../$(TEAM_PACK_NAME).zip
+	rm -rf ../../$(TEAM_PACK_NAME)_wis.zip doxygen_warn_logfile.log
 
 pack: doc clean $(SRC_FILES) $(TEST_SRC_FILES)
-	mkdir -p ../../tmp/doc && cp -a ../doc/. ../../tmp/doc
-	mkdir -p ../../tmp/install && cp -a ../installer/. ../../tmp/install
-	mkdir -p ../../tmp/repo &&  cp -a ../. ../../tmp/repo
-	rm -rf ../../tmp/repo/doc ../../tmp/repo/venv
-	rm -rf ../../tmp/repo/Pipfile ../../tmp/repo/Pipfile.lock ../../tmp/repo/.idea
-	cd ../../tmp && zip -qr ../$(TEAM_PACK_NAME).zip .
+	mkdir -p ../../$(TEAM_PACK_NAME)/doc && cp -a ../doc/. ../../$(TEAM_PACK_NAME)/doc
+	mkdir -p ../../$(TEAM_PACK_NAME)/install && cp -a ../installer/. ../../$(TEAM_PACK_NAME)/install
+	mkdir -p ../../$(TEAM_PACK_NAME)/repo &&  cp -a ../. ../../$(TEAM_PACK_NAME)/repo
+	rm -rf ../../$(TEAM_PACK_NAME)/repo/doc ../../$(TEAM_PACK_NAME)/repo/venv
+	rm -rf ../../$(TEAM_PACK_NAME)/repo/Pipfile ../../$(TEAM_PACK_NAME)/repo/Pipfile.lock
+	rm -rf ../../$(TEAM_PACK_NAME)/repo/.idea  ../../$(TEAM_PACK_NAME)/src/doxygen_warn_logfile.log
+	cd ../.. && zip -qr $(TEAM_PACK_NAME).zip $(TEAM_PACK_NAME)
 
 wispack: clean $(WIS_DOC_FILES) $(SRC_FILES) $(TEST_SRC_FILES)
-	mkdir -p ../../tmp && cp ../hodnoceni.txt ../../tmp
-	mkdir -p ../../tmp/src/ && cp ./*.py ../../tmp/src
-	cp ../dokumentace.pdf ../../tmp
-	cp ../odevzdani.txt ../../tmp
-	cd ../../tmp && zip -qr ../$(TEAM_PACK_NAME)_wis.zip .
+	mkdir -p ../../$(TEAM_PACK_NAME) && cp ../hodnoceni.txt ../../$(TEAM_PACK_NAME)
+	mkdir -p ../../$(TEAM_PACK_NAME)/src/ && cp ./*.py ../../$(TEAM_PACK_NAME)/src
+	cp ../dokumentace.pdf ../../$(TEAM_PACK_NAME)
+	cp ../odevzdani.txt ../../$(TEAM_PACK_NAME)
+	cd ../.. && zip -qr $(TEAM_PACK_NAME)_qis.zip $(TEAM_PACK_NAME)
 
 install: install.sh $(SRC_FILES) $(TEST_SRC_FILES)
 	bash ../installer/install.sh
