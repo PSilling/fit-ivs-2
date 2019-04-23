@@ -54,7 +54,7 @@ wispack: clean $(WIS_DOC_FILES) $(SRC_FILES) $(TEST_SRC_FILES)
 	mkdir -p ../../$(TEAM_PACK_NAME)/src/ && cp ./*.py ../../$(TEAM_PACK_NAME)/src
 	cp ../dokumentace.pdf ../../$(TEAM_PACK_NAME)
 	cp ../odevzdani.txt ../../$(TEAM_PACK_NAME)
-	cd ../.. && zip -qr $(TEAM_PACK_NAME)_qis.zip $(TEAM_PACK_NAME)
+	cd ../.. && zip -qr $(TEAM_PACK_NAME)_wis.zip $(TEAM_PACK_NAME)
 
 install: install.sh $(SRC_FILES) $(TEST_SRC_FILES)
 	bash ../installer/install.sh
