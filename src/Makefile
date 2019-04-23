@@ -40,7 +40,7 @@ cleanall:
 	rm -rf __pycache__ ../doc ../../$(TEAM_PACK_NAME) ../../$(TEAM_PACK_NAME).zip
 	rm -rf ../../$(TEAM_PACK_NAME)_wis.zip doxygen_warn_logfile.log
 
-pack: doc clean $(SRC_FILES) $(TEST_SRC_FILES)
+pack: clean doc $(SRC_FILES) $(TEST_SRC_FILES)
 	mkdir -p ../../$(TEAM_PACK_NAME)/doc && cp -a ../doc/. ../../$(TEAM_PACK_NAME)/doc
 	mkdir -p ../../$(TEAM_PACK_NAME)/install && cp -a ../installer/. ../../$(TEAM_PACK_NAME)/install
 	mkdir -p ../../$(TEAM_PACK_NAME)/repo &&  cp -a ../. ../../$(TEAM_PACK_NAME)/repo
