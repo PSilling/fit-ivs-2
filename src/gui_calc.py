@@ -339,7 +339,49 @@ class UiMainWindow(QtWidgets.QMainWindow):
         self.label_2.setText("")
         self.label_2.setAlignment(QtCore.Qt.AlignCenter)
         self.label_2.setObjectName("label_2")
+
         self.setCentralWidget(self.central_widget)
+
+        # setup help frame, button and label
+        font.setPointSize(14)
+        self.help_frame = QtWidgets.QFrame()
+        self.help_frame.setObjectName("help")
+        self.help_frame.setFixedSize(600, 430)
+        self.help_frame.setStyleSheet(
+            "QFrame{background-color: #EEE;}"
+        )
+        self.help_frame.setWindowTitle("IVS Chicken Calc Help")
+        self.help_frame.setWindowIcon(QtGui.QIcon("../ivs-icon.png"))
+
+        self.help_button = QtWidgets.QPushButton(self.frame)
+        self.help_button.setGeometry(QtCore.QRect(460, 15, 25, 25))
+        self.help_button.setText("?")
+        self.help_button.setFont(font)
+        self.help_button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.help_button.setFlat(True)
+
+        self.help_label = QtWidgets.QLabel(self.help_frame)
+        self.help_label.setGeometry(QtCore.QRect(20, 15, 550, 400))
+        self.help_label.setText(
+            "<h2>IVS Chicken Calc Project</h2>"
+            "A simple Python calculator created during the IVS team project.\n"
+            "<h3>Usage information</h3>"
+            "<ul><li>Use the provided number buttons to write the problem you want to solve.<br />"
+            "Keyboard numbers can be used as well.</li>"
+            "<li>Operation buttons work in a similar way, although only basic math operations<br />"
+            "like addition listen to keyboard input. Please keep in mind that operations like<br />"
+            "addition require two operands, while operations like factorial only need<br />"
+            "a single operand. Switching between the two types may end up removing<br />"
+            "a part of your input, so switch between those operation types wisely. Single<br/>"
+            "operand operations will be shown at the start of the input field, while all two<br />"
+            "operand ones should be in the centre.</li>"
+            "<li>After you calculate the result using the equals button, the result will be<br />"
+            "automatically used as the first or the most significant operand of all selected<br />"
+            "operations. This is useful for nesting multiple operations in a row, but can be<br />"
+            "stopped by resetting the calculator using the clear button.</li></ul>"
+            "For more information see the user documentation.\n"
+        )
+        self.help_button.clicked.connect(self.toggle_help)
 
         # connect events and actions
         QtCore.QMetaObject.connectSlotsByName(self)
@@ -413,6 +455,12 @@ class UiMainWindow(QtWidgets.QMainWindow):
             self.clear_calc()
         elif key == QtCore.Qt.Key_Enter or key == QtCore.Qt.Key_Return or key == 61:
             self.calculate_result()
+
+    ##
+    # @brief Toggles the visibility of the help label window.
+    #
+    def toggle_help(self):
+        self.help_frame.setVisible(not self.help_frame.isVisible())
 
     ##
     # @brief Sets the selected operation and its dependencies.
