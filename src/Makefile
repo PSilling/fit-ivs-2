@@ -46,7 +46,7 @@ pack: clean doc $(SRC_FILES) $(TEST_SRC_FILES)
 	mkdir -p ../../$(TEAM_PACK_NAME)/repo &&  cp -a ../. ../../$(TEAM_PACK_NAME)/repo
 	rm -rf ../../$(TEAM_PACK_NAME)/repo/doc ../../$(TEAM_PACK_NAME)/repo/venv
 	rm -rf ../../$(TEAM_PACK_NAME)/repo/Pipfile ../../$(TEAM_PACK_NAME)/repo/Pipfile.lock
-	rm -rf ../../$(TEAM_PACK_NAME)/repo/.idea  ../../$(TEAM_PACK_NAME)/src/doxygen_warn_logfile.log
+	rm -rf ../../$(TEAM_PACK_NAME)/repo/.idea  ../../$(TEAM_PACK_NAME)/repo/src/doxygen_warn_logfile.log
 	cd ../.. && zip -qr $(TEAM_PACK_NAME).zip $(TEAM_PACK_NAME)
 
 wispack: clean $(WIS_DOC_FILES) $(SRC_FILES) $(TEST_SRC_FILES)
