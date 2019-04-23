@@ -7,6 +7,8 @@ if [ -f "/usr/share/ivs-chicken-calc/ivs-icon.png" ]; then
 	    sudo rm /usr/share/applications/gui_calc
         sudo rm -rf /usr/share/ivs-chicken-calc
         sudo rm /usr/share/applications/ivs-chicken-calc.desktop
+        sudo rm /usr/share/applications/remove-chicken-calc.desktop
+        sudo rm /usr/share/applications/uninstall.sh
 
         echo "Uninstallation was successful!"
     else
